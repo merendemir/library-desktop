@@ -6,6 +6,7 @@ public class TitleConstants {
 
     //FRAME
     public static final String LOGIN_FRAME = "Login";
+    public static final String MAIN_FRAME = "Library Management System";
 
     //DIALOG
     public static final String REGISTER_DIALOG = "Register";

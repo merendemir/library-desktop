@@ -1,25 +1,22 @@
 package com.application.library.desktop.enumerations;
 
-import com.application.library.desktop.core.BaseFrame;
+import com.application.library.desktop.core.IBaseFrame;
+import com.application.library.desktop.gui.home.MainFrame;
 import com.application.library.desktop.gui.login.LoginFrame;
-
-import javax.swing.*;
 
 public enum ApplicationFrames {
 
     LOGIN_FRAME(LoginFrame.class),
 
-    MAIN_FRAME(LoginFrame.class);
+    MAIN_FRAME(MainFrame.class);
 
-    private final Class<? extends BaseFrame> frameClass;
+    private final Class<? extends IBaseFrame> frameClass;
 
-    ApplicationFrames(Class<? extends BaseFrame> frameClass) {
+    ApplicationFrames(Class<? extends IBaseFrame> frameClass) {
         this.frameClass = frameClass;
     }
 
-    public Class<? extends BaseFrame> getFrameClass() {
+    public Class<? extends IBaseFrame> getFrameClass() {
         return frameClass;
     }
-
-
 }

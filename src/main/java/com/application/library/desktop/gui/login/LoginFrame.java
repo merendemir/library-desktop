@@ -2,6 +2,7 @@ package com.application.library.desktop.gui.login;
 
 import com.application.library.desktop.constants.TitleConstants;
 import com.application.library.desktop.core.BaseFrame;
+import com.application.library.desktop.core.IBaseFrame;
 import com.application.library.desktop.enumerations.NotificationType;
 import com.application.library.desktop.gui.common.ShowNotificationFrame;
 import com.application.library.desktop.gui.header.ApplicationHeaderPanel;
@@ -24,7 +25,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class LoginFrame extends BaseFrame implements ShowNotificationFrame {
+public class LoginFrame extends BaseFrame implements ShowNotificationFrame, IBaseFrame {
 
     //VARIABLES
     private final ImageIcon backgroundImageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/image/loginBackgroundImage.png")));
@@ -43,13 +44,15 @@ public class LoginFrame extends BaseFrame implements ShowNotificationFrame {
         $$$setupUI$$$();
         setTitle(TitleConstants.LOGIN_FRAME);
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(backgroundImageIcon.getIconWidth(), backgroundImageIcon.getIconHeight());
+
         setLocationRelativeTo(null);
         setResizable(false);
-        setVisible(true);
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setComponentActions();
+
+        setVisible(true);
     }
 
     private void setComponentActions() {
@@ -80,16 +83,21 @@ public class LoginFrame extends BaseFrame implements ShowNotificationFrame {
         updateLoginButtonStatus();
     }
 
+    private void updateLoginButtonStatus() {
+        loginButton.setEnabled(
+                !emailTextField.getText().isEmpty() &&
+                        passwordField.getPassword().length != 0);
+    }
+
     @Override
     public void showNotification(String message, NotificationType type, int timeInSecond) {
         applicationHeaderPanel.showNotification(message, type);
         TaskExecutorService.schedule(applicationHeaderPanel::hideNotification, timeInSecond, TimeUnit.SECONDS);
     }
 
-    private void updateLoginButtonStatus() {
-        loginButton.setEnabled(
-                !emailTextField.getText().isEmpty() &&
-                passwordField.getPassword().length != 0);
+    @Override
+    public void showFrame() {
+        setVisible(true);
     }
 
     //COMPONENTS
@@ -100,6 +108,7 @@ public class LoginFrame extends BaseFrame implements ShowNotificationFrame {
     private JButton loginButton;
     private JButton registerButton;
     private JCheckBox showPasswordCheckbox;
+
     private JPanel applicationHeaderPanelGUI;
 
     private void createUIComponents() {

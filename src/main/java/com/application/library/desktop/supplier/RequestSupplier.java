@@ -14,7 +14,8 @@ public class RequestSupplier {
         if (is2xxSuccessful(statusCode)) return response;
 
         if (statusCode == 401) throw new AuthorizationException();
-        throw new RequestNotSuccessException();
+
+        throw new RequestNotSuccessException(response);
     }
 
     private static boolean is2xxSuccessful(int statusCode) {

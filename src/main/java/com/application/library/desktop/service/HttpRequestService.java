@@ -36,12 +36,7 @@ public class HttpRequestService {
     }
 
     private <T> T getDataOnResponseHandler(ResponseHandler<T> responseHandler, Class<T> responseType) {
-        if (responseHandler == null) return null;
-        if (responseHandler.getData() == null && responseHandler.getErrorMessage() != null) {
-            JOptionPane.showMessageDialog(null, responseHandler.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-
+        if (responseHandler == null || responseHandler.getData() == null) return null;
         return objectMapper.convertValue(responseHandler.getData(), responseType);
     }
 

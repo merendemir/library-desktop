@@ -4,19 +4,8 @@ public class ResponseHandler<T> {
 
     private T data;
     private String timestamp;
-    private String errorMessage;
 
     public ResponseHandler() {
-    }
-
-    public ResponseHandler(T data, String timestamp) {
-        this.data = data;
-        this.timestamp = timestamp;
-    }
-
-    public ResponseHandler(String timestamp, String errorMessage) {
-        this.timestamp = timestamp;
-        this.errorMessage = errorMessage;
     }
 
     public T getData() {
@@ -36,11 +25,4 @@ public class ResponseHandler<T> {
         this.timestamp = timestamp;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 }
