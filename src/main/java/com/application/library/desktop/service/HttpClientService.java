@@ -1,5 +1,6 @@
 package com.application.library.desktop.service;
 
+import com.application.library.desktop.supplier.ClientSupplier;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
+import static com.application.library.desktop.supplier.RequestSupplier.executeRequest;
 
 @Service
 public class HttpClientService {
@@ -20,22 +23,27 @@ public class HttpClientService {
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    // SERVICE
+    private final ClientSupplier clientSupplier;
+
+    public HttpClientService(ClientSupplier clientSupplier) {
+        this.clientSupplier = clientSupplier;
+    }
+
 
     public <T> T doPost(String path, Object body, Class<T> responseClass) {
-        try {
+        return clientSupplier.executeClientSend(() -> {
             HttpRequest build = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + path))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(asJsonString(body)))
                     .build();
 
-            HttpResponse<String> response = client.send(build, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = executeRequest(client.send(build, HttpResponse.BodyHandlers.ofString()));
             return objectMapper.readValue(response.body(), responseClass);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        });
     }
+
 
     public <T> T doGet(String path, Class<T> responseClass) {
         try {
@@ -47,7 +55,6 @@ public class HttpClientService {
                     .build();
 
             HttpResponse<String> response = client.send(build, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
             return objectMapper.readValue(response.body(), responseClass);
         } catch (Exception e) {
             e.printStackTrace();

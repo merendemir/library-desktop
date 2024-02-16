@@ -1,20 +1,25 @@
 package com.application.library.desktop.utils;
 
-import java.time.LocalDateTime;
-
 public class ErrorResponseHandler {
-    private final String errorMessage;
-    private final LocalDateTime timestamp = LocalDateTime.now();
+    private String errorMessage;
+    private String timestamp;
 
-    public ErrorResponseHandler(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public ErrorResponseHandler() {
     }
 
     public String getErrorMessage() {
         return errorMessage;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

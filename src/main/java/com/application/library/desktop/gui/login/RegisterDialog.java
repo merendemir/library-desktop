@@ -1,6 +1,9 @@
 package com.application.library.desktop.gui.login;
 
-import com.application.library.desktop.data.dto.user.BaseUserSaveRequestDto;
+import com.application.library.desktop.constants.MessageConstants;
+import com.application.library.desktop.constants.TitleConstants;
+import com.application.library.desktop.core.BaseDialog;
+import com.application.library.desktop.request.dto.user.BaseUserSaveRequestDto;
 import com.application.library.desktop.service.HttpRequestService;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -11,7 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 
 @Service
-public class RegisterDialog extends JDialog {
+public class RegisterDialog extends BaseDialog {
     private final HttpRequestService httpRequestService;
 
     private boolean isSuccessful;
@@ -33,6 +36,7 @@ public class RegisterDialog extends JDialog {
 
         setSize(450, 200);
         setResizable(false);
+        setTitle(TitleConstants.REGISTER_DIALOG);
 
         setComponentActions();
         setModal(true);
@@ -47,7 +51,6 @@ public class RegisterDialog extends JDialog {
     }
 
     private void onOK() {
-
         Long id = httpRequestService.register(new BaseUserSaveRequestDto(
                 emailTextField.getText(),
                 firstNameField.getText(),
@@ -56,8 +59,11 @@ public class RegisterDialog extends JDialog {
         ));
 
         isSuccessful = id != null;
-        JOptionPane.showMessageDialog(this, "User has been registered", "Info", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
+
+        if (isSuccessful) {
+            JOptionPane.showMessageDialog(this, MessageConstants.REGISTER_SUCCESS, TitleConstants.INFORMATION, JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        }
     }
 
     public boolean isSuccessful() {
