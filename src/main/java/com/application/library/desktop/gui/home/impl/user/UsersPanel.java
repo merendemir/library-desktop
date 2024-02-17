@@ -1,5 +1,6 @@
 package com.application.library.desktop.gui.home.impl.user;
 
+import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.enumerations.SortDirection;
 import com.application.library.desktop.enumerations.UserRole;
 import com.application.library.desktop.gui.home.impl.panel.main.IMainPanel;
@@ -53,8 +54,14 @@ public class UsersPanel extends JPanel implements IMainPanel {
         userTypeFilterComboBox.setSelectedIndex(-1);
 
         setComponentActions();
+        setComponentDefaults();
         updateClearAndSearchButtonStatus();
         updateClearAndSearchButtonStatus();
+    }
+
+    private void setComponentDefaults() {
+        searchButton.setIcon(IconConstants.SEARCH_ICON);
+        clearButton.setIcon(IconConstants.CLEAR_ICON);
     }
 
     private void setComponentActions() {
@@ -178,12 +185,10 @@ public class UsersPanel extends JPanel implements IMainPanel {
         panel3.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel2.add(panel3, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         searchButton = new JButton();
-        searchButton.setIcon(new ImageIcon(getClass().getResource("/icons/search.png")));
         searchButton.setText("");
         searchButton.setToolTipText("APPLY SELECTIONS");
         panel3.add(searchButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         clearButton = new JButton();
-        clearButton.setIcon(new ImageIcon(getClass().getResource("/icons/clean.png")));
         clearButton.setText("");
         clearButton.setToolTipText("CLEAR SELECTIONS");
         panel3.add(clearButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

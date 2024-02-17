@@ -11,4 +11,6 @@ public class RequestPathConstants {
     public static final String REGISTER_PATH = "/auth/register";
     public static final String LOGIN_PATH = "/auth/login";
     public static final String SAVE_USER_PATH = "/api/users";
+    public static final String GET_ALL_USERS = "/api/users";
+    public static final String UPDATE_ACTIVE_USER_INFO_PATH = "/api/users/active";
 }

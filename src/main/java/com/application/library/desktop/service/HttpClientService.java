@@ -85,6 +85,19 @@ public class HttpClientService {
         });
     }
 
+    public <T> T doPut(String path, Object body, Class<T> responseClass) {
+        return clientSupplier.executeClientSend(() -> {
+            HttpRequest.Builder builder = HttpRequest.newBuilder()
+                    .uri(URI.create(serverUrl + path))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN)
+                    .PUT(HttpRequest.BodyPublishers.ofString(asJsonString(body)));
+
+            HttpResponse<String> response = executeRequest(client.send(builder.build(), HttpResponse.BodyHandlers.ofString()));
+            return objectMapper.readValue(response.body(), responseClass);
+        });
+    }
+
     private String getFullPathByParams(String path, Map<String, String> params) {
         StringBuilder fullPath = new StringBuilder(serverUrl + path);
         if (params != null && !params.isEmpty()) {

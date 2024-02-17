@@ -1,13 +1,17 @@
-package com.application.library.desktop.gui.login;
+package com.application.library.desktop.gui.home.impl.account.button;
 
 import com.application.library.desktop.constants.MessageConstants;
+import com.application.library.desktop.constants.SystemVariables;
 import com.application.library.desktop.constants.TitleConstants;
 import com.application.library.desktop.core.BaseDialog;
+import com.application.library.desktop.dto.UserInformation;
+import com.application.library.desktop.enumerations.ApplicationFrames;
 import com.application.library.desktop.enumerations.NotificationType;
-import com.application.library.desktop.gui.home.impl.account.button.UserDetailsPanel;
+import com.application.library.desktop.listener.event.ChangeFrameEvent;
 import com.application.library.desktop.listener.event.NotificationEvent;
 import com.application.library.desktop.request.dto.user.BaseUserSaveRequestDto;
 import com.application.library.desktop.service.HttpRequestService;
+import com.application.library.desktop.utils.ApplicationContextHelper;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -18,70 +22,43 @@ import javax.swing.*;
 import java.awt.*;
 
 @Service
-public class RegisterDialog extends BaseDialog {
+public class UserUpdateAccountDialog extends BaseDialog {
+    private final UserDetailsPanel userDetailsPanel = new UserDetailsPanel(this::updateButtonOKStatus);
+    private final ApplicationContextHelper applicationContextHelper;
     private final HttpRequestService httpRequestService;
     private final ApplicationEventPublisher applicationEventPublisher;
-
-    private final UserDetailsPanel userDetailsPanel = new UserDetailsPanel(this::updateButtonOKStatus);
-
-    private boolean isSuccessful;
-
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JPanel userDetailsPanelGUI;
+    private JPanel userDetailsGUI;
 
-
-    public RegisterDialog(HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
+    public UserUpdateAccountDialog(ApplicationContextHelper applicationContextHelper, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationContextHelper = applicationContextHelper;
         this.httpRequestService = httpRequestService;
         this.applicationEventPublisher = applicationEventPublisher;
-
         $$$setupUI$$$();
         setContentPane(contentPane);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-        setSize(450, 200);
-        setResizable(false);
-        setTitle(TitleConstants.REGISTER_DIALOG);
-
-        setComponentActions();
-        updateButtonOKStatus();
         setModal(true);
-    }
-
-    private void setComponentActions() {
+        setTitle(TitleConstants.UPDATE_ACCOUNT);
+        getRootPane().setDefaultButton(buttonOK);
         buttonOK.addActionListener(e -> onOK());
         buttonCancel.addActionListener(e -> dispose());
 
-        userDetailsPanel.setEmailText("");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        updateButtonOKStatus();
     }
 
-    private void onOK() {
-        Long id = httpRequestService.register(new BaseUserSaveRequestDto(
-                userDetailsPanel.getEmailText(),
-                userDetailsPanel.getFirstName(),
-                userDetailsPanel.getLastName(),
-                new String(userDetailsPanel.getPassword())
-        ));
+    public void showDialog() {
+        userDetailsPanel.clear();
+        UserInformation userInformation = SystemVariables.USER_INFORMATION;
+        userDetailsPanel.setFirstName(userInformation.getFirstName());
+        userDetailsPanel.setLastName(userInformation.getLastName());
+        userDetailsPanel.setEmailText(userInformation.getEmail());
 
-        isSuccessful = id != null;
 
-        if (isSuccessful) {
-            dispose();
-            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.REGISTER_SUCCESS, NotificationType.SUCCESS));
-        }
-    }
-
-    public boolean isSuccessful() {
-        return isSuccessful;
-    }
-
-    public String getEmail() {
-        return userDetailsPanel.getEmailText();
-    }
-
-    public void showDialog(Component parent) {
-        setLocationRelativeTo(parent);
+        pack();
+        setLocationRelativeTo(applicationContextHelper.getCurrentFrame());
+        setResizable(false);
         setVisible(true);
     }
 
@@ -92,6 +69,21 @@ public class RegisterDialog extends BaseDialog {
                         !userDetailsPanel.getFirstName().isEmpty() &&
                         !userDetailsPanel.getLastName().isEmpty()
         );
+    }
+
+    private void onOK() {
+        Long id = httpRequestService.updateActiveUserInfo(new BaseUserSaveRequestDto(
+                userDetailsPanel.getEmailText(),
+                userDetailsPanel.getFirstName(),
+                userDetailsPanel.getLastName(),
+                new String(userDetailsPanel.getPassword())
+        ));
+
+        if (id != null) {
+            applicationEventPublisher.publishEvent(new ChangeFrameEvent(this, ApplicationFrames.LOGIN_FRAME));
+            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.UPDATE_ACCOUNT_SUCCESS, NotificationType.SUCCESS));
+            dispose();
+        }
     }
 
     /**
@@ -114,15 +106,12 @@ public class RegisterDialog extends BaseDialog {
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
-        buttonOK.setText("Register");
+        buttonOK.setText("OK");
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
         buttonCancel.setText("Cancel");
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel3.add(userDetailsPanelGUI, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        contentPane.add(userDetailsGUI, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     }
 
     /**
@@ -133,7 +122,6 @@ public class RegisterDialog extends BaseDialog {
     }
 
     private void createUIComponents() {
-        userDetailsPanelGUI = userDetailsPanel;
+        userDetailsGUI = userDetailsPanel;
     }
-
 }

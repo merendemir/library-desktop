@@ -39,13 +39,12 @@ public class HttpRequestService {
     }
 
     public PaginationResponseDto<List<UserDTO>> getAllUser(Map<String, String> params) {
-        return getDataOnResponseHandlerByPagination(clientService.doGet("/api/users", params, ResponseHandler.class), new TypeReference<PaginationResponseDto<List<UserDTO>>>() {
+        return getDataOnResponseHandlerByPagination(clientService.doGet(RequestPathConstants.GET_ALL_USERS, params, ResponseHandler.class), new TypeReference<PaginationResponseDto<List<UserDTO>>>() {
         });
-
     }
 
-    public UserDTO getUser(Long id) {
-        return getDataOnResponseHandler(clientService.doGet("/api/users/" + id, ResponseHandler.class), UserDTO.class);
+    public Long updateActiveUserInfo(BaseUserSaveRequestDto requestDto) {
+        return getDataOnResponseHandler(clientService.doPut(RequestPathConstants.UPDATE_ACTIVE_USER_INFO_PATH, requestDto, ResponseHandler.class), Long.class);
     }
 
     private <T> T getDataOnResponseHandler(ResponseHandler<T> responseHandler, Class<T> responseType) {

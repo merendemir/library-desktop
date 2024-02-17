@@ -1,5 +1,6 @@
 package com.application.library.desktop.gui.menu.book;
 
+import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.enumerations.MenuOptions;
 import com.application.library.desktop.enumerations.UserRole;
 import com.application.library.desktop.gui.menu.IMenu.SelectableTreeNode;
@@ -7,6 +8,7 @@ import com.application.library.desktop.listener.event.MenuSelectedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.Set;
 
@@ -25,8 +27,8 @@ public class AddBookTreeNode extends DefaultMutableTreeNode implements Selectabl
     }
 
     @Override
-    public String getImageIconPath() {
-        return "/icons/menu-add-books.png";
+    public ImageIcon getImageIconPath() {
+        return IconConstants.MENU_ADD_BOOK_ICON;
     }
 
     @Override

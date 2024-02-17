@@ -13,4 +13,6 @@ public class MessageConstants {
     public static final String REGISTER_SUCCESS = "Registration Successful.";
     public static final String LOGIN_SUCCESS = "Login Successful.";
     public static final String USER_SAVE_SUCCESS = "User Saved Successfully.";
+    public static final String LOGOUT_SUCCESS = "Logout Successful.";
+    public static final String UPDATE_ACCOUNT_SUCCESS = "Account Updated Successfully.";
 }

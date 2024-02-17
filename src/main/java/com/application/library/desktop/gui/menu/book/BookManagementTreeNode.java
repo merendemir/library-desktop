@@ -1,9 +1,11 @@
 package com.application.library.desktop.gui.menu.book;
 
+import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.enumerations.MenuOptions;
 import com.application.library.desktop.enumerations.UserRole;
 import com.application.library.desktop.gui.menu.IMenu.ImageIconTreeNode;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.Set;
 
@@ -14,8 +16,8 @@ public class BookManagementTreeNode extends DefaultMutableTreeNode implements Im
     }
 
     @Override
-    public String getImageIconPath() {
-        return "/icons/menu-book-management.png";
+    public ImageIcon getImageIconPath() {
+        return IconConstants.MENU_BOOK_MANAGEMENT_ICON;
     }
 
     @Override

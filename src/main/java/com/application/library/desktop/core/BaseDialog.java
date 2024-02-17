@@ -1,12 +1,13 @@
 package com.application.library.desktop.core;
 
+import com.application.library.desktop.constants.IconConstants;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public class BaseDialog extends JDialog {
     public BaseDialog() {
-        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("/icons/application_icon_48px.png"))).getImage());
+        setIconImage(IconConstants.APP_ICON.getImage());
     }
 
     public BaseDialog(Window owner, String title) {

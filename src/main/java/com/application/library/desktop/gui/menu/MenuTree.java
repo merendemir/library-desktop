@@ -48,7 +48,7 @@ public class MenuTree extends JTree {
             public java.awt.Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 if (value instanceof ImageIconTreeNode node) {
-                    setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(node.getImageIconPath()))));
+                    setIcon(node.getImageIconPath());
                 }
 
                 setBackgroundNonSelectionColor(MENU_COLOR);

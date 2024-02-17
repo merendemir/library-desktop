@@ -10,4 +10,8 @@ public class TitleConstants {
 
     //DIALOG
     public static final String REGISTER_DIALOG = "Register";
+    public static final String UPDATE_ACCOUNT = "Update Account";
+
+    //MENU ITEM
+    public static final String LOGOUT = "Logout";
 }

@@ -1,5 +1,6 @@
 package com.application.library.desktop.gui.specification;
 
+import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.supplier.Supplier;
 import com.application.library.desktop.supplier.TaskSupplier;
 import com.application.library.desktop.utils.pagination.PaginationResponseDto;
@@ -28,6 +29,7 @@ public class PaginationPanel extends JPanel {
         pageElementSizeComboBox.setSelectedIndex(0);
 
         setComponentActions();
+        setComponentDefaults();
     }
 
     private void setComponentActions() {
@@ -36,7 +38,7 @@ public class PaginationPanel extends JPanel {
             Supplier.run(taskSupplier);
         });
 
-        beforePageButton.addActionListener(e -> {
+        previousPageButton.addActionListener(e -> {
             currentPage = currentPage - 1;
             Supplier.run(taskSupplier);
         });
@@ -55,6 +57,13 @@ public class PaginationPanel extends JPanel {
             currentPage = 0;
             Supplier.run(taskSupplier);
         });
+    }
+
+    private void setComponentDefaults() {
+        previousPageButton.setIcon(IconConstants.PREVIOUS_ICON);
+        nextPageButton.setIcon(IconConstants.NEXT_ICON);
+        firstPageButton.setIcon(IconConstants.FIRST_ICON);
+        lastPageButton.setIcon(IconConstants.LAST_ICON);
     }
 
     private Integer getPageElementSize() {
@@ -77,15 +86,16 @@ public class PaginationPanel extends JPanel {
 
 
         firstPageButton.setEnabled(!responseDto.isFirst());
-        beforePageButton.setEnabled(!responseDto.isFirst());
+        previousPageButton.setEnabled(!responseDto.isFirst());
 
         nextPageButton.setEnabled(!responseDto.isLast());
         lastPageButton.setEnabled(!responseDto.isLast());
     }
 
+
     // COMPONENTS
     private JButton firstPageButton;
-    private JButton beforePageButton;
+    private JButton previousPageButton;
     private JButton nextPageButton;
     private JButton lastPageButton;
     private JComboBox<Integer> pageElementSizeComboBox;
@@ -110,22 +120,18 @@ public class PaginationPanel extends JPanel {
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(1, 6, new Insets(0, 0, 0, 0), -1, -1));
         firstPageButton = new JButton();
-        firstPageButton.setIcon(new ImageIcon(getClass().getResource("/icons/first.png")));
         firstPageButton.setText("");
         contentPane.add(firstPageButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        beforePageButton = new JButton();
-        beforePageButton.setIcon(new ImageIcon(getClass().getResource("/icons/before.png")));
-        beforePageButton.setText("");
-        contentPane.add(beforePageButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        previousPageButton = new JButton();
+        previousPageButton.setText("");
+        contentPane.add(previousPageButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pageDetailsLabel = new JLabel();
-        pageDetailsLabel.setText("Label");
+        pageDetailsLabel.setText("");
         contentPane.add(pageDetailsLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         nextPageButton = new JButton();
-        nextPageButton.setIcon(new ImageIcon(getClass().getResource("/icons/next.png")));
         nextPageButton.setText("");
         contentPane.add(nextPageButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lastPageButton = new JButton();
-        lastPageButton.setIcon(new ImageIcon(getClass().getResource("/icons/last.png")));
         lastPageButton.setText("");
         contentPane.add(lastPageButton, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pageElementSizeComboBox = new JComboBox();
@@ -138,4 +144,5 @@ public class PaginationPanel extends JPanel {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }

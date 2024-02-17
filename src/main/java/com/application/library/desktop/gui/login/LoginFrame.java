@@ -1,5 +1,6 @@
 package com.application.library.desktop.gui.login;
 
+import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.constants.SystemVariables;
 import com.application.library.desktop.constants.TitleConstants;
 import com.application.library.desktop.core.BaseFrame;
@@ -30,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class LoginFrame extends BaseFrame implements ShowNotificationFrame, IBaseFrame {
 
     //VARIABLES
-    private final ImageIcon backgroundImageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/image/loginBackgroundImage.png")));
+    private final ImageIcon backgroundImageIcon = IconConstants.APPLICATION_BACKGROUND;
 
     //SERVICES
     private final RegisterDialog registerDialog;

@@ -12,7 +12,7 @@ import java.awt.*;
 import java.time.LocalDateTime;
 
 public class HeaderPanel extends JPanel implements TimeUpdatablePanel {
-    public final static String APP_NAME = "LIBRARY DESKTOP APPLICATIION";
+    public final static String APP_NAME = "LIBRARY MANAGEMENT SYSTEM";
     public final static String SERVER_TIME_TEXT = "Time: ";
     private JPanel contentPane;
     private JLabel applicationNameLabel;
