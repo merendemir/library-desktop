@@ -4,13 +4,16 @@ import com.application.library.desktop.constants.RequestPathConstants;
 import com.application.library.desktop.request.dto.user.BaseUserSaveRequestDto;
 import com.application.library.desktop.request.dto.user.LoginRequestDto;
 import com.application.library.desktop.request.dto.user.LoginResponseDto;
+import com.application.library.desktop.request.dto.user.UserSaveRequestDto;
 import com.application.library.desktop.request.view.UserDTO;
-
 import com.application.library.desktop.utils.ResponseHandler;
+import com.application.library.desktop.utils.pagination.PaginationResponseDto;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class HttpRequestService {
@@ -31,6 +34,16 @@ public class HttpRequestService {
         return getDataOnResponseHandler(clientService.doPost(RequestPathConstants.LOGIN_PATH, loginRequestDto, ResponseHandler.class), LoginResponseDto.class);
     }
 
+    public Long saveUser(UserSaveRequestDto userSaveRequestDto) {
+        return getDataOnResponseHandler(clientService.doPost(RequestPathConstants.SAVE_USER_PATH, userSaveRequestDto, ResponseHandler.class), Long.class);
+    }
+
+    public PaginationResponseDto<List<UserDTO>> getAllUser(Map<String, String> params) {
+        return getDataOnResponseHandlerByPagination(clientService.doGet("/api/users", params, ResponseHandler.class), new TypeReference<PaginationResponseDto<List<UserDTO>>>() {
+        });
+
+    }
+
     public UserDTO getUser(Long id) {
         return getDataOnResponseHandler(clientService.doGet("/api/users/" + id, ResponseHandler.class), UserDTO.class);
     }
@@ -40,5 +53,8 @@ public class HttpRequestService {
         return objectMapper.convertValue(responseHandler.getData(), responseType);
     }
 
-
+    private <T> T getDataOnResponseHandlerByPagination(ResponseHandler<T> responseHandler, TypeReference<T> responseType) {
+        if (responseHandler == null || responseHandler.getData() == null) return null;
+        return objectMapper.convertValue(responseHandler.getData(), responseType);
+    }
 }

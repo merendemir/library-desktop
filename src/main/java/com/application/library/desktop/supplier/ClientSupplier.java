@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpResponse;
+
 @Service
 public class ClientSupplier {
 
@@ -27,22 +29,37 @@ public class ClientSupplier {
         try {
             return supplier.get();
         } catch (AuthorizationException authorizationException) {
-            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.AUTHORIZATION_ERROR, NotificationType.WARNING));
-            applicationEventPublisher.publishEvent(new ChangeFrameEvent(this, ApplicationFrames.LOGIN_FRAME));
+            manageAuthorizationException();
         } catch (RequestNotSuccessException requestNotSuccessException) {
-            try {
-                ErrorResponseHandler errorResponseHandler = objectMapper.readValue(requestNotSuccessException.getResponse().body(), ErrorResponseHandler.class);
-                applicationEventPublisher.publishEvent(new NotificationEvent(this, errorResponseHandler.getErrorMessage(), NotificationType.WARNING));
-            } catch (Throwable throwable) {
-                applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.SERVER_ERROR, NotificationType.ERROR));
-                throwable.printStackTrace();
-            }
+            manageRequestNotSuccessException(requestNotSuccessException);
         } catch (Throwable throwable) {
-            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.SERVER_ERROR, NotificationType.ERROR));
+            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.CONNECTION_ERROR, NotificationType.ERROR));
             throwable.printStackTrace();
         }
 
         return null;
+    }
+
+    private void manageAuthorizationException() {
+        applicationEventPublisher.publishEvent(new ChangeFrameEvent(this, ApplicationFrames.LOGIN_FRAME));
+        applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.AUTHORIZATION_ERROR, NotificationType.WARNING));
+    }
+
+    private void manageRequestNotSuccessException(RequestNotSuccessException requestNotSuccessException) {
+        try {
+            HttpResponse<String> response = requestNotSuccessException.getResponse();
+
+            NotificationType notificationType = is4xxClientError(response.statusCode()) ? NotificationType.WARNING : NotificationType.ERROR;
+            ErrorResponseHandler errorResponseHandler = objectMapper.readValue(response.body(), ErrorResponseHandler.class);
+            applicationEventPublisher.publishEvent(new NotificationEvent(this, errorResponseHandler.getErrorMessage(), notificationType));
+        } catch (Throwable throwable) {
+            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.SERVER_ERROR, NotificationType.ERROR));
+            throwable.printStackTrace();
+        }
+    }
+
+    private boolean is4xxClientError(int statusCode) {
+        return statusCode >= 400 && statusCode < 500;
     }
 
 }

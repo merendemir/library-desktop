@@ -29,5 +29,4 @@ public class NotificationListener {
             ((ShowNotificationFrame) bean).showNotification(event.getMessage(), event.getNotificationType(), event.getTimeInSecond());
         }
     }
-
 }

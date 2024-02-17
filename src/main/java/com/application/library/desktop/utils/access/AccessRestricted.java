@@ -1,4 +1,4 @@
-package com.application.library.desktop.gui.home.models;
+package com.application.library.desktop.utils.access;
 
 import com.application.library.desktop.enumerations.UserRole;
 

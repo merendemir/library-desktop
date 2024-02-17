@@ -1,5 +1,6 @@
 package com.application.library.desktop.gui.login;
 
+import com.application.library.desktop.constants.SystemVariables;
 import com.application.library.desktop.constants.TitleConstants;
 import com.application.library.desktop.core.BaseFrame;
 import com.application.library.desktop.core.IBaseFrame;
@@ -21,6 +22,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -52,13 +54,19 @@ public class LoginFrame extends BaseFrame implements ShowNotificationFrame, IBas
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setComponentActions();
 
-        setVisible(true);
+//        showFrame();
     }
 
     private void setComponentActions() {
         loginButton.addActionListener(e -> {
             String email = emailTextField.getText();
             String password = new String(passwordField.getPassword());
+
+            if (SystemVariables.isDeveloperMode) {
+                email = ("system.admin");
+//                email = ("lib");
+                password = ("123");
+            }
 
             LoginResponseDto loginResponseDto = httpRequestService.login(new LoginRequestDto(email, password));
             if (loginResponseDto == null) return;
@@ -80,6 +88,12 @@ public class LoginFrame extends BaseFrame implements ShowNotificationFrame, IBas
 
         emailTextField.getDocument().addDocumentListener(new CostomDocumentListener());
         passwordField.getDocument().addDocumentListener(new CostomDocumentListener());
+
+        contentPane.registerKeyboardAction(e ->
+                        loginButton.doClick(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)
+                , JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
         updateLoginButtonStatus();
     }
 
@@ -97,7 +111,14 @@ public class LoginFrame extends BaseFrame implements ShowNotificationFrame, IBas
 
     @Override
     public void showFrame() {
+        emailTextField.setText("");
+        passwordField.setText("");
         setVisible(true);
+
+        if (SystemVariables.isDeveloperMode) {
+            loginButton.setEnabled(true);
+            loginButton.doClick();
+        }
     }
 
     //COMPONENTS

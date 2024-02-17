@@ -5,6 +5,7 @@ import com.application.library.desktop.constants.SystemVariables;
 import com.application.library.desktop.dto.UserInformation;
 import com.application.library.desktop.enumerations.ApplicationFrames;
 import com.application.library.desktop.enumerations.NotificationType;
+import com.application.library.desktop.gui.menu.MenuTree;
 import com.application.library.desktop.listener.event.ChangeFrameEvent;
 import com.application.library.desktop.listener.event.LoginSuccessEvent;
 import com.application.library.desktop.listener.event.NotificationEvent;
@@ -17,9 +18,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginListener {
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final MenuTree menuTree;
 
-    public LoginListener(ApplicationEventPublisher applicationEventPublisher) {
+    public LoginListener(ApplicationEventPublisher applicationEventPublisher, MenuTree menuTree) {
         this.applicationEventPublisher = applicationEventPublisher;
+        this.menuTree = menuTree;
     }
 
     @Async
@@ -27,6 +30,7 @@ public class LoginListener {
     public void onLoginSuccessEvent(LoginSuccessEvent event) {
         LoginResponseDto loginResponseDto = event.getLoginResponseDto();
         updateSystemVariablesByLoginResponseDto(loginResponseDto);
+        menuTree.updateMenu();
 
         applicationEventPublisher.publishEvent(new ChangeFrameEvent(this, ApplicationFrames.MAIN_FRAME));
         applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.LOGIN_SUCCESS, NotificationType.SUCCESS));

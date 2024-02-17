@@ -1,8 +1,7 @@
-package com.application.library.desktop.utils;
+package com.application.library.desktop.utils.access;
 
 import com.application.library.desktop.constants.SystemVariables;
 import com.application.library.desktop.enumerations.UserRole;
-import com.application.library.desktop.gui.home.models.AccessRestricted;
 
 import java.util.Set;
 
@@ -11,8 +10,7 @@ public class AccessControlUtils {
     public static boolean hasMatchingAuthority(AccessRestricted accessRestricted) {
         Set<UserRole> userRoles = SystemVariables.USER_ROLES;
 
-        System.out.println("userRoles: " + userRoles);
-        if (userRoles == null || userRoles.isEmpty()) return true; //todo: remove this line after testing
+        if (userRoles == null || userRoles.isEmpty()) return false;
 
         Set<UserRole> accessibleRoles = accessRestricted.getAccessibleRoles();
 
@@ -20,4 +18,9 @@ public class AccessControlUtils {
                 .anyMatch(accessibleRoles::contains);
     }
 
+    public static boolean hasAdminAuthority() {
+        Set<UserRole> userRoles = SystemVariables.USER_ROLES;
+        if (userRoles == null || userRoles.isEmpty()) return false;
+        return userRoles.contains(UserRole.ROLE_ADMIN);
+    }
 }

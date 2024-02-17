@@ -1,12 +1,13 @@
-package com.application.library.desktop.gui.home.impl;
+package com.application.library.desktop.gui.home.impl.book;
 
+import com.application.library.desktop.gui.home.impl.panel.main.IMainPanel;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BooksPanel extends JPanel {
+public class BooksPanel extends JPanel implements IMainPanel {
     public BooksPanel() {
         $$$setupUI$$$();
 
@@ -38,4 +39,8 @@ public class BooksPanel extends JPanel {
         return contentPane;
     }
 
+    @Override
+    public void selected() {
+        System.out.println("BooksPanel selected");
+    }
 }

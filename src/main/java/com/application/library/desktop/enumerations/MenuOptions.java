@@ -1,10 +1,14 @@
 package com.application.library.desktop.enumerations;
 
 public enum MenuOptions {
-    MENU("Menu", "homeCard"),
+    HOME("Menu", "homeCard"),
     BOOK_MANAGEMENT("Book Management", "homeCard"),
-    BOOKS("Books", "booksCard"),
-    ADD_BOOK("Add Book", "addBookCard");
+    USER_MANAGEMENT("User Management", "homeCard"),
+    BOOKS("Book", "bookCard"),
+    ADD_BOOK("Add Book", "addBookCard"),
+    USERS("Users", "usersCard"),
+    ADD_USER("Add User", "addUserCard");
+
 
     private final String title;
     private final String cardName;

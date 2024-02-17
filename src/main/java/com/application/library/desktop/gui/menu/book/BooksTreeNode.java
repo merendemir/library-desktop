@@ -1,8 +1,8 @@
-package com.application.library.desktop.gui.home.tree.book;
+package com.application.library.desktop.gui.menu.book;
 
 import com.application.library.desktop.enumerations.MenuOptions;
 import com.application.library.desktop.enumerations.UserRole;
-import com.application.library.desktop.gui.home.models.MutableTreeNode;
+import com.application.library.desktop.gui.menu.IMenu.SelectableTreeNode;
 import com.application.library.desktop.listener.event.MenuSelectedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.Set;
 
 @Component
-public class BooksTreeNode extends DefaultMutableTreeNode implements MutableTreeNode {
+public class BooksTreeNode extends DefaultMutableTreeNode implements SelectableTreeNode {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private static final MenuOptions menuOptions = MenuOptions.BOOKS;

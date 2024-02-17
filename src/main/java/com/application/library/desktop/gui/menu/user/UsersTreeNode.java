@@ -1,8 +1,8 @@
-package com.application.library.desktop.gui.home.tree.book;
+package com.application.library.desktop.gui.menu.user;
 
 import com.application.library.desktop.enumerations.MenuOptions;
 import com.application.library.desktop.enumerations.UserRole;
-import com.application.library.desktop.gui.home.models.MutableTreeNode;
+import com.application.library.desktop.gui.menu.IMenu.SelectableTreeNode;
 import com.application.library.desktop.listener.event.MenuSelectedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -11,22 +11,25 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.Set;
 
 @Component
-public class AddBookTreeNode extends DefaultMutableTreeNode implements MutableTreeNode {
+public class UsersTreeNode extends DefaultMutableTreeNode implements SelectableTreeNode {
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public AddBookTreeNode(ApplicationEventPublisher applicationEventPublisher) {
-        super(MenuOptions.ADD_BOOK.getTitle());
+    private static final MenuOptions menuOptions = MenuOptions.USERS;
+
+    public UsersTreeNode(ApplicationEventPublisher applicationEventPublisher) {
+        super(menuOptions.getTitle());
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
     public void treeSelected() {
-        applicationEventPublisher.publishEvent(new MenuSelectedEvent(this, MenuOptions.ADD_BOOK));
+        applicationEventPublisher.publishEvent(new MenuSelectedEvent(this, menuOptions));
     }
+
 
     @Override
     public String getImageIconPath() {
-        return "/icons/menu-add-books.png";
+        return "/icons/menu-books.png";
     }
 
     @Override
