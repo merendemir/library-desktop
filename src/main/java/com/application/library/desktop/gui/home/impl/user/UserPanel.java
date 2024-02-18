@@ -1,18 +1,15 @@
 package com.application.library.desktop.gui.home.impl.user;
 
-import com.application.library.desktop.constants.MessageConstants;
-import com.application.library.desktop.enumerations.NotificationType;
 import com.application.library.desktop.enumerations.UserRole;
 import com.application.library.desktop.gui.home.impl.panel.main.IMainPanel;
-import com.application.library.desktop.listener.event.NotificationEvent;
 import com.application.library.desktop.request.dto.user.UserSaveRequestDto;
-import com.application.library.desktop.service.HttpRequestService;
+import com.application.library.desktop.request.view.UserDTO;
+import com.application.library.desktop.supplier.Supplier;
+import com.application.library.desktop.supplier.TaskSupplier;
 import com.application.library.desktop.utils.access.AccessControlUtils;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -21,15 +18,12 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
-public class AddUserPanel extends JPanel implements IMainPanel {
+public class UserPanel extends JPanel implements IMainPanel {
+    private final TaskSupplier onSave;
 
-    private final HttpRequestService httpRequestService;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    public UserPanel(TaskSupplier onSave) {
+        this.onSave = onSave;
 
-    public AddUserPanel(HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
-        this.httpRequestService = httpRequestService;
-        this.applicationEventPublisher = applicationEventPublisher;
         setLayout(new BorderLayout());
         add(contentPane, BorderLayout.CENTER);
 
@@ -50,31 +44,7 @@ public class AddUserPanel extends JPanel implements IMainPanel {
         });
 
         saveButton.addActionListener(e -> {
-            UserSaveRequestDto requestDto = new UserSaveRequestDto();
-            requestDto.setEmail(emailTextField.getText());
-            requestDto.setFirstName(firstNameField.getText());
-            requestDto.setLastName(lastNameField.getText());
-            requestDto.setPassword(new String(passwordField.getPassword()));
-
-
-            Set<UserRole> roles = new HashSet<>();
-            if (roleUserCheckBox.isSelected()) {
-                roles.add(UserRole.ROLE_USER);
-            }
-            if (roleAdminCheckBox.isSelected()) {
-                roles.add(UserRole.ROLE_ADMIN);
-            }
-            if (roleLibrarianCheckBox.isSelected()) {
-                roles.add(UserRole.ROLE_LIBRARIAN);
-            }
-
-            requestDto.setRoles(roles);
-
-            Long savedUserId = httpRequestService.saveUser(requestDto);
-            if (savedUserId != null) {
-                applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.USER_SAVE_SUCCESS, NotificationType.SUCCESS));
-                clearFields();
-            }
+            Supplier.run(onSave);
         });
 
         emailTextField.getDocument().addDocumentListener(new CostomDocumentListener());
@@ -86,6 +56,20 @@ public class AddUserPanel extends JPanel implements IMainPanel {
         roleLibrarianCheckBox.addActionListener(e -> updateSaveButtonStatus());
     }
 
+    public void fillValues(UserDTO userDTO) {
+        clearFields();
+        if (userDTO == null) return;
+
+        emailTextField.setText(userDTO.getEmail());
+        firstNameField.setText(userDTO.getFirstName());
+        lastNameField.setText(userDTO.getLastName());
+
+        Set<UserRole> authorities = userDTO.getAuthorities();
+        roleUserCheckBox.setSelected(authorities.contains(UserRole.ROLE_USER));
+        roleAdminCheckBox.setSelected(authorities.contains(UserRole.ROLE_ADMIN));
+        roleLibrarianCheckBox.setSelected(authorities.contains(UserRole.ROLE_LIBRARIAN));
+    }
+
     private void clearFields() {
         emailTextField.setText("");
         firstNameField.setText("");
@@ -94,6 +78,28 @@ public class AddUserPanel extends JPanel implements IMainPanel {
         roleUserCheckBox.setSelected(false);
         roleAdminCheckBox.setSelected(false);
         roleLibrarianCheckBox.setSelected(false);
+    }
+
+    public UserSaveRequestDto getUserSaveRequestDto() {
+        UserSaveRequestDto requestDto = new UserSaveRequestDto();
+        requestDto.setEmail(emailTextField.getText());
+        requestDto.setFirstName(firstNameField.getText());
+        requestDto.setLastName(lastNameField.getText());
+        requestDto.setPassword(new String(passwordField.getPassword()));
+
+        Set<UserRole> roles = new HashSet<>();
+        if (roleUserCheckBox.isSelected()) {
+            roles.add(UserRole.ROLE_USER);
+        }
+        if (roleAdminCheckBox.isSelected()) {
+            roles.add(UserRole.ROLE_ADMIN);
+        }
+        if (roleLibrarianCheckBox.isSelected()) {
+            roles.add(UserRole.ROLE_LIBRARIAN);
+        }
+
+        requestDto.setRoles(roles);
+        return requestDto;
     }
 
     private void updateSaveButtonStatus() {

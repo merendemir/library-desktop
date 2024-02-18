@@ -22,7 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 
 @Service
-public class UserUpdateAccountDialog extends BaseDialog {
+public class UpdateActiveUserAccountDialog extends BaseDialog {
     private final UserDetailsPanel userDetailsPanel = new UserDetailsPanel(this::updateButtonOKStatus);
     private final ApplicationContextHelper applicationContextHelper;
     private final HttpRequestService httpRequestService;
@@ -32,7 +32,7 @@ public class UserUpdateAccountDialog extends BaseDialog {
     private JButton buttonCancel;
     private JPanel userDetailsGUI;
 
-    public UserUpdateAccountDialog(ApplicationContextHelper applicationContextHelper, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
+    public UpdateActiveUserAccountDialog(ApplicationContextHelper applicationContextHelper, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
         this.applicationContextHelper = applicationContextHelper;
         this.httpRequestService = httpRequestService;
         this.applicationEventPublisher = applicationEventPublisher;

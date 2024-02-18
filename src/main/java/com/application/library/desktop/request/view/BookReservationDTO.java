@@ -7,7 +7,7 @@ import com.application.library.desktop.request.view.core.IntegerEntityDTO;
 import java.time.LocalDate;
 
 public class BookReservationDTO extends IntegerEntityDTO {
-    private UserDTO user;
+    private UserListDTO user;
     private BookDTO book;
     private LocalDate reservationDate;
     private boolean completed;
@@ -15,11 +15,11 @@ public class BookReservationDTO extends IntegerEntityDTO {
     public BookReservationDTO() {
     }
 
-    public UserDTO getUser() {
+    public UserListDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(UserListDTO user) {
         this.user = user;
     }
 

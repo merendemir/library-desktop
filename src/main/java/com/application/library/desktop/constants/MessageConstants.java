@@ -15,4 +15,9 @@ public class MessageConstants {
     public static final String USER_SAVE_SUCCESS = "User Saved Successfully.";
     public static final String LOGOUT_SUCCESS = "Logout Successful.";
     public static final String UPDATE_ACCOUNT_SUCCESS = "Account Updated Successfully.";
+    public static final String USER_UPDATE_SUCCESS = "User Updated Successfully.";
+    public static final String USER_DELETE_SUCCESS = "User Deleted Successfully.";
+
+    //CONFIRMATION
+    public static final String DELETE_USER_CONFIRMATION = "Are you sure you want to delete this user?";
 }

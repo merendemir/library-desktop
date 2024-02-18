@@ -1,9 +1,15 @@
 package com.application.library.desktop.gui.home.impl.panel.main;
 
+import com.application.library.desktop.constants.MessageConstants;
 import com.application.library.desktop.enumerations.MenuOptions;
+import com.application.library.desktop.enumerations.NotificationType;
 import com.application.library.desktop.gui.home.impl.book.BooksPanel;
-import com.application.library.desktop.gui.home.impl.user.AddUserPanel;
+import com.application.library.desktop.gui.home.impl.user.UserPanel;
 import com.application.library.desktop.gui.home.impl.user.UsersPanel;
+import com.application.library.desktop.listener.event.NotificationEvent;
+import com.application.library.desktop.request.dto.user.UserSaveRequestDto;
+import com.application.library.desktop.service.HttpRequestService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
@@ -17,13 +23,16 @@ public class MainPanel extends JPanel {
     private final Map<MenuOptions, IMainPanel> cardMap = new HashMap<>();
     private final BooksPanel homePanel = new BooksPanel();
     private final BooksPanel booksPanel = new BooksPanel();
-    private final AddUserPanel addUserPanel;
+    private final UserPanel addUserPanel = new UserPanel(this::saveUser);
     private final UsersPanel usersPanel;
+    private final HttpRequestService httpRequestService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
 
-    public MainPanel(AddUserPanel addUserPanel, UsersPanel usersPanel) {
-        this.addUserPanel = addUserPanel;
+    public MainPanel(UsersPanel usersPanel, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
         this.usersPanel = usersPanel;
+        this.httpRequestService = httpRequestService;
+        this.applicationEventPublisher = applicationEventPublisher;
 
         setLayout(new CardLayout(0, 0));
 
@@ -46,5 +55,15 @@ public class MainPanel extends JPanel {
         cardMap.put(MenuOptions.ADD_BOOK, booksPanel);
         cardMap.put(MenuOptions.USERS, usersPanel);
         cardMap.put(MenuOptions.ADD_USER, addUserPanel);
+    }
+
+    private void saveUser() {
+        UserSaveRequestDto requestDto = addUserPanel.getUserSaveRequestDto();
+        Long savedUserId = httpRequestService.saveUser(requestDto);
+
+        if (savedUserId != null) {
+            addUserPanel.selected();
+            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.USER_SAVE_SUCCESS, NotificationType.SUCCESS));
+        }
     }
 }

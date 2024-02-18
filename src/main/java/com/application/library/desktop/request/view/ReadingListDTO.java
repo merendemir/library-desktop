@@ -7,17 +7,17 @@ import com.application.library.desktop.request.view.core.IntegerEntityDTO;
 import java.util.Set;
 
 public class ReadingListDTO extends IntegerEntityDTO {
-    private UserDTO user;
+    private UserListDTO user;
     private Set<BookDTO> books;
 
     public ReadingListDTO() {
     }
 
-    public UserDTO getUser() {
+    public UserListDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(UserListDTO user) {
         this.user = user;
     }
 

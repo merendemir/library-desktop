@@ -16,11 +16,11 @@ import javax.swing.*;
 public class UserButton extends JButton {
     private final JPopupMenu popupMenu = new JPopupMenu();
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final UserUpdateAccountDialog userUpdateAccountDialog;
+    private final UpdateActiveUserAccountDialog updateActiveUserAccountDialog;
 
-    public UserButton(ApplicationEventPublisher applicationEventPublisher, UserUpdateAccountDialog userUpdateAccountDialog) {
+    public UserButton(ApplicationEventPublisher applicationEventPublisher, UpdateActiveUserAccountDialog updateActiveUserAccountDialog) {
         this.applicationEventPublisher = applicationEventPublisher;
-        this.userUpdateAccountDialog = userUpdateAccountDialog;
+        this.updateActiveUserAccountDialog = updateActiveUserAccountDialog;
         setIcon(IconConstants.USER_ICON);
         setMenuItem();
 
@@ -28,9 +28,9 @@ public class UserButton extends JButton {
     }
 
     private void setMenuItem() {
-        JMenuItem updateProfileMenuItem = new JMenuItem(TitleConstants.UPDATE_ACCOUNT, IconConstants.UPDATE_PROFILE_ICON);
+        JMenuItem updateProfileMenuItem = new JMenuItem(TitleConstants.UPDATE_ACCOUNT, IconConstants.UPDATE_ACCOUNT_ICON);
         updateProfileMenuItem.addActionListener(e -> {
-            userUpdateAccountDialog.showDialog();
+            updateActiveUserAccountDialog.showDialog();
         });
 
         JMenuItem logoutMenuItem = new JMenuItem(TitleConstants.LOGOUT, IconConstants.LOGOUT_ICON);

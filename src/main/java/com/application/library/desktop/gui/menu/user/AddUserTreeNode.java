@@ -3,7 +3,6 @@ package com.application.library.desktop.gui.menu.user;
 import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.enumerations.MenuOptions;
 import com.application.library.desktop.enumerations.UserRole;
-import com.application.library.desktop.gui.home.impl.user.AddUserPanel;
 import com.application.library.desktop.gui.menu.IMenu.SelectableTreeNode;
 import com.application.library.desktop.listener.event.MenuSelectedEvent;
 import org.springframework.context.ApplicationEventPublisher;

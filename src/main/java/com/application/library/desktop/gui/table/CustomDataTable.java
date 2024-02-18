@@ -70,7 +70,8 @@ public class CustomDataTable extends JTable {
     }
 
 
-    public int getID_COLUMN_INDEX() {
-        return ID_COLUMN_INDEX;
+    public String getSelectedRowId(int row) {
+        int selectedRow = getSelectedRow();
+        return getValueAt(selectedRow, ID_COLUMN_INDEX).toString();
     }
 }

@@ -1,7 +1,7 @@
 package com.application.library.desktop.request.view.transaction.lend;
 
 
-import com.application.library.desktop.request.view.UserDTO;
+import com.application.library.desktop.request.view.UserListDTO;
 import com.application.library.desktop.request.view.book.BaseBookDTO;
 import com.application.library.desktop.request.view.core.UUIDEntityDTO;
 
@@ -14,8 +14,8 @@ public class LendTransactionDTO extends UUIDEntityDTO {
     private Double lateFeePaid;
     private boolean returned;
     private BaseBookDTO book;
-    private UserDTO user;
-    private UserDTO lender;
+    private UserListDTO user;
+    private UserListDTO lender;
 
     public LendTransactionDTO() {
     }
@@ -60,19 +60,19 @@ public class LendTransactionDTO extends UUIDEntityDTO {
         this.book = book;
     }
 
-    public UserDTO getUser() {
+    public UserListDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(UserListDTO user) {
         this.user = user;
     }
 
-    public UserDTO getLender() {
+    public UserListDTO getLender() {
         return lender;
     }
 
-    public void setLender(UserDTO lender) {
+    public void setLender(UserListDTO lender) {
         this.lender = lender;
     }
 }

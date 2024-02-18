@@ -4,10 +4,11 @@ import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.enumerations.SortDirection;
 import com.application.library.desktop.enumerations.UserRole;
 import com.application.library.desktop.gui.home.impl.panel.main.IMainPanel;
+import com.application.library.desktop.gui.home.impl.user.menu.UserPopupMenu;
 import com.application.library.desktop.gui.specification.PaginationPanel;
 import com.application.library.desktop.gui.specification.SortPanel;
 import com.application.library.desktop.gui.table.CustomDataTable;
-import com.application.library.desktop.request.view.UserDTO;
+import com.application.library.desktop.request.view.UserListDTO;
 import com.application.library.desktop.service.HttpRequestService;
 import com.application.library.desktop.utils.TimeUtil;
 import com.application.library.desktop.utils.access.AccessControlUtils;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +30,7 @@ import java.util.Objects;
 
 @Service
 public class UsersPanel extends JPanel implements IMainPanel {
-    String[] columnNames = {"id", "First Name", "Last Name", "Email", "Creation Date", "Updated Date"};
+    String[] columnNames = {"id", "X", "First Name", "Last Name", "Email", "Creation Date", "Updated Date"};
     private final Map<String, String> sortMap = new HashMap<>(Map.of(
             "Fist Name", "firstName",
             "Last Name", "lastName",
@@ -42,9 +45,11 @@ public class UsersPanel extends JPanel implements IMainPanel {
 
     //SERVICE
     private final HttpRequestService httpRequestService;
+    private final UserPopupMenu userPopupMenu;
 
-    public UsersPanel(HttpRequestService httpRequestService) {
+    public UsersPanel(HttpRequestService httpRequestService, UserPopupMenu userPopupMenu) {
         this.httpRequestService = httpRequestService;
+        this.userPopupMenu = userPopupMenu;
 
         $$$setupUI$$$();
         setLayout(new BorderLayout());
@@ -57,6 +62,7 @@ public class UsersPanel extends JPanel implements IMainPanel {
         setComponentDefaults();
         updateClearAndSearchButtonStatus();
         updateClearAndSearchButtonStatus();
+        userDataTable.getColumnModel().getColumn(1).setMaxWidth(35);
     }
 
     private void setComponentDefaults() {
@@ -81,11 +87,24 @@ public class UsersPanel extends JPanel implements IMainPanel {
         userTypeFilterComboBox.addActionListener(e -> updateClearAndSearchButtonStatus());
         sortPanel.getSortParameterComboBox().addActionListener(e -> updateClearAndSearchButtonStatus());
         sortPanel.getSortDirectionComboBox().addActionListener(e -> updateClearAndSearchButtonStatus());
+
+        userDataTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    int row = userDataTable.rowAtPoint(e.getPoint());
+                    userDataTable.setRowSelectionInterval(row, row);
+
+                    userPopupMenu.setSelectedUserId(Long.parseLong(userDataTable.getSelectedRowId(row)));
+                    userPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
     }
 
-    private void sendRequestAndUpdateUsersTable() {
+    public void sendRequestAndUpdateUsersTable() {
         userDataTable.removeAllData();
-        PaginationResponseDto<List<UserDTO>> users = httpRequestService.getAllUser(getParams());
+        PaginationResponseDto<List<UserListDTO>> users = httpRequestService.getAllUser(getParams());
         paginationPanel.fillPageDetails(users);
         users.getContent().forEach(this::addRow);
     }
@@ -108,18 +127,19 @@ public class UsersPanel extends JPanel implements IMainPanel {
         return params;
     }
 
-    public void addRow(UserDTO userDTO) {
-        userDataTable.addRow(convertUserDto(userDTO));
+    public void addRow(UserListDTO userListDTO) {
+        userDataTable.addRow(convertUserDto(userListDTO));
     }
 
-    private String[] convertUserDto(UserDTO userDTO) {
+    private String[] convertUserDto(UserListDTO userListDTO) {
         return new String[]{
-                String.valueOf(userDTO.getId()),
-                userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getEmail(),
-                TimeUtil.formatDateString(userDTO.getCreatedAt()),
-                TimeUtil.formatDateString(userDTO.getUpdatedAt())
+                String.valueOf(userListDTO.getId()),
+                String.valueOf(userDataTable.getRowCount() + 1),
+                userListDTO.getFirstName(),
+                userListDTO.getLastName(),
+                userListDTO.getEmail(),
+                TimeUtil.formatDateString(userListDTO.getCreatedAt()),
+                TimeUtil.formatDateString(userListDTO.getUpdatedAt())
         };
     }
 
@@ -163,7 +183,7 @@ public class UsersPanel extends JPanel implements IMainPanel {
     private void $$$setupUI$$$() {
         createUIComponents();
         contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 5), -1, -1));
+        contentPane.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 5), -1, -1));
         final JScrollPane scrollPane1 = new JScrollPane();
         contentPane.add(scrollPane1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         scrollPane1.setViewportView(usersTableGUI);
@@ -194,14 +214,12 @@ public class UsersPanel extends JPanel implements IMainPanel {
         panel3.add(clearButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         contentPane.add(spacer1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        contentPane.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel4.add(paginationPanelGUI, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        panel4.add(spacer3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        panel4.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**

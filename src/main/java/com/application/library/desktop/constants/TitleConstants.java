@@ -14,4 +14,6 @@ public class TitleConstants {
 
     //MENU ITEM
     public static final String LOGOUT = "Logout";
+    public static final String UPDATE_USER = "Update User";
+    public static final String DELETE_USER = "Delete User";
 }

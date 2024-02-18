@@ -13,11 +13,13 @@ public class IconConstants {
 
 
     public static final ImageIcon APP_ICON = ICON_OF("application-icon-48px.png");
-    public static final ImageIcon UPDATE_PROFILE_ICON = ICON_OF("user-update.png");
+    public static final ImageIcon UPDATE_ACCOUNT_ICON = ICON_OF("user-update.png");
+    public static final ImageIcon DELETE_USER_ICON = ICON_OF("delete-user.png");
     public static final ImageIcon LOGOUT_ICON = ICON_OF("logout.png");
     public static final ImageIcon USER_ICON = ICON_OF("user.png");
     public static final ImageIcon SEARCH_ICON = ICON_OF("search.png");
     public static final ImageIcon CLEAR_ICON = ICON_OF("clear.png");
+    public static final ImageIcon WARNING_ICON = ICON_OF("warning.png");
 
     //MENU ICONS
     public static final ImageIcon MENU_ICON = ICON_OF("menu.png");

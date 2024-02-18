@@ -1,18 +1,14 @@
 package com.application.library.desktop.request.view;
 
 
-import com.application.library.desktop.enumerations.UserRole;
 import com.application.library.desktop.request.view.core.IntegerEntityDTO;
 
-import java.util.Set;
-
-public class UserDTO extends IntegerEntityDTO {
+public class UserListDTO extends IntegerEntityDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private Set<UserRole> authorities;
 
-    public UserDTO() {
+    public UserListDTO() {
     }
 
     public String getFirstName() {
@@ -37,14 +33,6 @@ public class UserDTO extends IntegerEntityDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Set<UserRole> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<UserRole> authorities) {
-        this.authorities = authorities;
     }
 
     @Override
