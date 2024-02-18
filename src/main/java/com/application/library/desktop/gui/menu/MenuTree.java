@@ -4,6 +4,7 @@ import com.application.library.desktop.constants.SystemVariables;
 import com.application.library.desktop.gui.menu.book.AddBookTreeNode;
 import com.application.library.desktop.gui.menu.book.BookManagementTreeNode;
 import com.application.library.desktop.gui.menu.book.BooksTreeNode;
+import com.application.library.desktop.gui.menu.settings.SettingsTreeNode;
 import com.application.library.desktop.gui.menu.user.AddUserTreeNode;
 import com.application.library.desktop.gui.menu.user.UserManagementTreeNode;
 import com.application.library.desktop.gui.menu.user.UsersTreeNode;
@@ -19,7 +20,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class MenuTree extends JTree {
@@ -33,12 +33,14 @@ public class MenuTree extends JTree {
     private final AddBookTreeNode addBookTreeNode;
     private final UsersTreeNode usersTreeNode;
     private final AddUserTreeNode addUserTreeNode;
+    private final SettingsTreeNode settingsTreeNode;
 
-    public MenuTree(BooksTreeNode booksTreeNode, AddBookTreeNode addBookTreeNode, UsersTreeNode usersTreeNode, AddUserTreeNode addUserTreeNode) {
+    public MenuTree(BooksTreeNode booksTreeNode, AddBookTreeNode addBookTreeNode, UsersTreeNode usersTreeNode, AddUserTreeNode addUserTreeNode, SettingsTreeNode settingsTreeNode) {
         this.booksTreeNode = booksTreeNode;
         this.addBookTreeNode = addBookTreeNode;
         this.usersTreeNode = usersTreeNode;
         this.addUserTreeNode = addUserTreeNode;
+        this.settingsTreeNode = settingsTreeNode;
 
         setForeground(MENU_COLOR);
         setBackground(MENU_COLOR);
@@ -72,13 +74,16 @@ public class MenuTree extends JTree {
     private DefaultMutableTreeNode getMenu() {
         List<DefaultMutableTreeNode> children = List.of(
                 getAccessRestrictedRootMenuByChildrenList(bookManagementTreeNode, List.of(booksTreeNode, addBookTreeNode)),
-                getAccessRestrictedRootMenuByChildrenList(userManagementTreeNode, List.of(usersTreeNode, addUserTreeNode))
+                getAccessRestrictedRootMenuByChildrenList(userManagementTreeNode, List.of(usersTreeNode, addUserTreeNode)),
+                settingsTreeNode
         );
 
         return getAccessRestrictedRootMenuByChildrenList(menuTreeNode, children);
 
     }
+
     private DefaultMutableTreeNode getAccessRestrictedRootMenuByChildrenList(DefaultMutableTreeNode rootNode, List<DefaultMutableTreeNode> children) {
+        rootNode.removeAllChildren();
         for (DefaultMutableTreeNode child : children) {
             if (child instanceof AccessRestricted menu) {
                 if (AccessControlUtils.hasMatchingAuthority(menu)) {

@@ -20,6 +20,7 @@ public class IconConstants {
     public static final ImageIcon SEARCH_ICON = ICON_OF("search.png");
     public static final ImageIcon CLEAR_ICON = ICON_OF("clear.png");
     public static final ImageIcon WARNING_ICON = ICON_OF("warning.png");
+    public static final ImageIcon SETTINGS_ICON = ICON_OF("settings.png");
 
     //MENU ICONS
     public static final ImageIcon MENU_ICON = ICON_OF("menu.png");

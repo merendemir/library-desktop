@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +65,23 @@ public class HttpRequestService {
         return getDataOnResponseHandler(clientService.doDelete(path, ResponseHandler.class), Long.class);
     }
 
+    public Integer getLendDaySettings() {
+        return getDataOnResponseHandler(clientService.doGet(RequestPathConstants.LEND_DAY_SETTINGS, ResponseHandler.class), Integer.class);
+    }
+
+    public Double getLateFeeSettings() {
+        return getDataOnResponseHandler(clientService.doGet(RequestPathConstants.LATE_FEE_SETTINGS, ResponseHandler.class), Double.class);
+    }
+
+    public String setLendDaySettings(Integer lendDay) {
+        Map<String, String> lendDayMap = new HashMap<>(Map.of("lendDay", lendDay.toString()));
+        return getDataOnResponseHandler(clientService.doPost(lendDayMap, RequestPathConstants.LEND_DAY_SETTINGS, ResponseHandler.class), String.class);
+    }
+
+    public String setLateFeeSettings(Double lateFee) {
+        Map<String, String> lendDayMap = new HashMap<>(Map.of("lateFeePerDay", lateFee.toString()));
+        return getDataOnResponseHandler(clientService.doPost(lendDayMap, RequestPathConstants.LATE_FEE_SETTINGS, ResponseHandler.class), String.class);
+    }
 
     private <T> T getDataOnResponseHandler(ResponseHandler<T> responseHandler, Class<T> responseType) {
         if (responseHandler == null || responseHandler.getData() == null) return null;

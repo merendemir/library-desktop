@@ -4,6 +4,7 @@ import com.application.library.desktop.constants.MessageConstants;
 import com.application.library.desktop.enumerations.MenuOptions;
 import com.application.library.desktop.enumerations.NotificationType;
 import com.application.library.desktop.gui.home.impl.book.BooksPanel;
+import com.application.library.desktop.gui.home.impl.settings.SettingsPanel;
 import com.application.library.desktop.gui.home.impl.user.UserPanel;
 import com.application.library.desktop.gui.home.impl.user.UsersPanel;
 import com.application.library.desktop.listener.event.NotificationEvent;
@@ -25,12 +26,14 @@ public class MainPanel extends JPanel {
     private final BooksPanel booksPanel = new BooksPanel();
     private final UserPanel addUserPanel = new UserPanel(this::saveUser);
     private final UsersPanel usersPanel;
+    private final SettingsPanel settingsPanel;
     private final HttpRequestService httpRequestService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
 
-    public MainPanel(UsersPanel usersPanel, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
+    public MainPanel(UsersPanel usersPanel, SettingsPanel settingsPanel, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
         this.usersPanel = usersPanel;
+        this.settingsPanel = settingsPanel;
         this.httpRequestService = httpRequestService;
         this.applicationEventPublisher = applicationEventPublisher;
 
@@ -55,6 +58,7 @@ public class MainPanel extends JPanel {
         cardMap.put(MenuOptions.ADD_BOOK, booksPanel);
         cardMap.put(MenuOptions.USERS, usersPanel);
         cardMap.put(MenuOptions.ADD_USER, addUserPanel);
+        cardMap.put(MenuOptions.SETTINGS, settingsPanel);
     }
 
     private void saveUser() {

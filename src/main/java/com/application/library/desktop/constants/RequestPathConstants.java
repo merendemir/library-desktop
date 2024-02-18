@@ -16,4 +16,7 @@ public class RequestPathConstants {
     public static final String UPDATE_ACTIVE_USER_INFO_PATH = "/api/users/active";
     public static final String GET_USER_BY_ID = "/api/users/{0}";
     public static final String DELETE_USER_BY_ID = "/api/users/{0}";
+
+    public static final String LEND_DAY_SETTINGS = "/api/settings/lend/day";
+    public static final String LATE_FEE_SETTINGS = "/api/settings/late/fee";
 }

@@ -7,7 +7,8 @@ public enum MenuOptions {
     BOOKS("Book", "bookCard"),
     ADD_BOOK("Add Book", "addBookCard"),
     USERS("Users", "usersCard"),
-    ADD_USER("Add User", "addUserCard");
+    ADD_USER("Add User", "addUserCard"),
+    SETTINGS("Settings", "settingsCard");
 
 
     private final String title;

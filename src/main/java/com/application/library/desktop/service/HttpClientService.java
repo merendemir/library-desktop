@@ -54,6 +54,26 @@ public class HttpClientService {
         });
     }
 
+    public <T> T doPost(Map<String, String> params, String path, Class<T> responseClass) {
+        return clientSupplier.executeClientSend(() -> {
+            HttpRequest.Builder builder = HttpRequest.newBuilder()
+                    .uri(URI.create(getFullPathByParams(path, params)))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN)
+                    .POST(HttpRequest.BodyPublishers.noBody());
+
+            HttpResponse.BodyHandler<String> responseBodyHandler = HttpResponse.BodyHandlers.ofString();
+
+            System.out.println("asd::: " + responseBodyHandler);
+
+
+            HttpRequest build = builder.build();
+            System.out.println("POST  " + build.uri());
+            HttpResponse<String> response = executeRequest(client.send(build, responseBodyHandler));
+            return objectMapper.readValue(response.body(), responseClass);
+        });
+    }
+
 
     public <T> T doGet(String path, Class<T> responseClass) {
         try {
@@ -64,7 +84,7 @@ public class HttpClientService {
                     .GET()
                     .build();
 
-            HttpResponse<String> response = client.send(build, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = executeRequest(client.send(build, HttpResponse.BodyHandlers.ofString()));
             System.out.println("GET   " + build.uri());
             return objectMapper.readValue(response.body(), responseClass);
         } catch (Exception e) {
@@ -82,7 +102,7 @@ public class HttpClientService {
                     .GET()
                     .build();
 
-            HttpResponse<String> response = client.send(build, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = executeRequest(client.send(build, HttpResponse.BodyHandlers.ofString()));
             System.out.println("GET   " + build.uri());
             return objectMapper.readValue(response.body(), responseClass);
         });
