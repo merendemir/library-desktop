@@ -17,6 +17,10 @@ public class TitleConstants {
     public static final String UPDATE_USER = "Update User";
     public static final String DELETE_USER = "Delete User";
 
+    public static final String UPDATE_SHELF = "Update Shelf";
+    public static final String DELETE_SHELF = "Delete Shelf";
+    public static final String SHOW_BOOKS_ON_SHELF = "Show Books";
+
     //TABBED PANE
     public static final String LEND_DAY_SETTINGS_TAB = "Lend Day Settings";
     public static final String LATE_FEE_SETTINGS_TAB = "Late Fee Settings";

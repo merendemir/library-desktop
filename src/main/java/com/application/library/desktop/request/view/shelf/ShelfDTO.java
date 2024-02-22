@@ -9,7 +9,6 @@ public class ShelfDTO {
     private String name;
     private Integer capacity;
     private Integer availableCapacity;
-    private Set<BookDTO> books;
 
 
     public Long getId() {
@@ -45,14 +44,5 @@ public class ShelfDTO {
 
     public void setAvailableCapacity(Integer availableCapacity) {
         this.availableCapacity = availableCapacity;
-    }
-
-
-    public Set<BookDTO> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<BookDTO> books) {
-        this.books = books;
     }
 }

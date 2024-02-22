@@ -55,6 +55,7 @@ public class CustomDataTable extends JTable {
 
                 final JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setBackground(isSelected ? SystemVariables.SYSTEM_DEFAULT_COLOR : row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+                c.setToolTipText(value.toString());
 
                 return c;
             }
@@ -70,7 +71,7 @@ public class CustomDataTable extends JTable {
     }
 
 
-    public String getSelectedRowId(int row) {
+    public String getSelectedRowId() {
         int selectedRow = getSelectedRow();
         return getValueAt(selectedRow, ID_COLUMN_INDEX).toString();
     }

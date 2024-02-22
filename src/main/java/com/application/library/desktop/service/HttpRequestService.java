@@ -1,12 +1,16 @@
 package com.application.library.desktop.service;
 
 import com.application.library.desktop.constants.RequestPathConstants;
+import com.application.library.desktop.request.dto.CreateBookRequestDto;
+import com.application.library.desktop.request.dto.SaveShelfRequestDto;
 import com.application.library.desktop.request.dto.user.BaseUserSaveRequestDto;
 import com.application.library.desktop.request.dto.user.LoginRequestDto;
 import com.application.library.desktop.request.dto.user.LoginResponseDto;
 import com.application.library.desktop.request.dto.user.UserSaveRequestDto;
 import com.application.library.desktop.request.view.UserDTO;
 import com.application.library.desktop.request.view.UserListDTO;
+import com.application.library.desktop.request.view.book.BookDTO;
+import com.application.library.desktop.request.view.shelf.ShelfBaseDTO;
 import com.application.library.desktop.utils.ResponseHandler;
 import com.application.library.desktop.utils.pagination.PaginationResponseDto;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -83,6 +87,43 @@ public class HttpRequestService {
         return getDataOnResponseHandler(clientService.doPost(lendDayMap, RequestPathConstants.LATE_FEE_SETTINGS, ResponseHandler.class), String.class);
     }
 
+    public PaginationResponseDto<List<ShelfBaseDTO>> getAllShelf(Map<String, String> paramMap) {
+        return getDataOnResponseHandlerByPagination(clientService.doGet(RequestPathConstants.GET_ALL_SHELVES, paramMap, ResponseHandler.class),
+                new TypeReference<PaginationResponseDto<List<ShelfBaseDTO>>>() {
+        });
+    }
+
+    public Long saveShelf(SaveShelfRequestDto requestDto) {
+        return getDataOnResponseHandler(clientService.doPost(RequestPathConstants.SAVE_SHELVES, requestDto, ResponseHandler.class), Long.class);
+    }
+
+    public Long updateShelf(Long shelfId, SaveShelfRequestDto requestDto) {
+        String path = MessageFormat.format(RequestPathConstants.UPDATE_SHELF_BY_ID, shelfId);
+        return getDataOnResponseHandler(clientService.doPut(path, requestDto, ResponseHandler.class), Long.class);
+    }
+
+    public Long deleteShelfById(Long shelfId) {
+        String path = MessageFormat.format(RequestPathConstants.DELETE_SHELF_BY_ID, shelfId);
+        return getDataOnResponseHandler(clientService.doDelete(path, ResponseHandler.class), Long.class);
+    }
+
+    public PaginationResponseDto<List<BookDTO>> getAllBooksByShelfId(Long shelfId, Map<String, String> paramMap) {
+        String path = MessageFormat.format(RequestPathConstants.GET_ALL_BOOKS_BY_SHELF_ID, shelfId);
+        return getDataOnResponseHandlerByPagination(clientService.doGet(path, paramMap, ResponseHandler.class),
+                new TypeReference<PaginationResponseDto<List<BookDTO>>>() {
+                });
+    }
+
+    public PaginationResponseDto<List<BookDTO>> getAllBooks(Map<String, String> paramMap) {
+        return getDataOnResponseHandlerByPagination(clientService.doGet(RequestPathConstants.GET_ALL_BOOKS, paramMap, ResponseHandler.class),
+                new TypeReference<PaginationResponseDto<List<BookDTO>>>() {
+                });
+    }
+
+    public Long saveBook(CreateBookRequestDto requestDto) {
+        return getDataOnResponseHandler(clientService.doPost(RequestPathConstants.SAVE_BOOKS, requestDto, ResponseHandler.class), Long.class);
+    }
+
     private <T> T getDataOnResponseHandler(ResponseHandler<T> responseHandler, Class<T> responseType) {
         if (responseHandler == null || responseHandler.getData() == null) return null;
         return objectMapper.convertValue(responseHandler.getData(), responseType);
@@ -92,4 +133,6 @@ public class HttpRequestService {
         if (responseHandler == null || responseHandler.getData() == null) return null;
         return objectMapper.convertValue(responseHandler.getData(), responseType);
     }
+
+
 }

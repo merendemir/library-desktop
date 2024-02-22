@@ -5,6 +5,9 @@ import com.application.library.desktop.gui.menu.book.AddBookTreeNode;
 import com.application.library.desktop.gui.menu.book.BookManagementTreeNode;
 import com.application.library.desktop.gui.menu.book.BooksTreeNode;
 import com.application.library.desktop.gui.menu.settings.SettingsTreeNode;
+import com.application.library.desktop.gui.menu.shelf.AddShelfTreeNode;
+import com.application.library.desktop.gui.menu.shelf.ShelfManagementTreeNode;
+import com.application.library.desktop.gui.menu.shelf.ShelvesTreeNode;
 import com.application.library.desktop.gui.menu.user.AddUserTreeNode;
 import com.application.library.desktop.gui.menu.user.UserManagementTreeNode;
 import com.application.library.desktop.gui.menu.user.UsersTreeNode;
@@ -29,18 +32,23 @@ public class MenuTree extends JTree {
     private final MenuTreeNode menuTreeNode = new MenuTreeNode();
     private final BookManagementTreeNode bookManagementTreeNode = new BookManagementTreeNode();
     private final UserManagementTreeNode userManagementTreeNode = new UserManagementTreeNode();
+    private final ShelfManagementTreeNode shelfManagementTreeNode = new ShelfManagementTreeNode();
     private final BooksTreeNode booksTreeNode;
     private final AddBookTreeNode addBookTreeNode;
     private final UsersTreeNode usersTreeNode;
     private final AddUserTreeNode addUserTreeNode;
     private final SettingsTreeNode settingsTreeNode;
+    private final ShelvesTreeNode shelvesTreeNode;
+    private final AddShelfTreeNode addShelfTreeNode;
 
-    public MenuTree(BooksTreeNode booksTreeNode, AddBookTreeNode addBookTreeNode, UsersTreeNode usersTreeNode, AddUserTreeNode addUserTreeNode, SettingsTreeNode settingsTreeNode) {
+    public MenuTree(BooksTreeNode booksTreeNode, AddBookTreeNode addBookTreeNode, UsersTreeNode usersTreeNode, AddUserTreeNode addUserTreeNode, SettingsTreeNode settingsTreeNode, ShelvesTreeNode shelvesTreeNode, AddShelfTreeNode addShelfTreeNode) {
         this.booksTreeNode = booksTreeNode;
         this.addBookTreeNode = addBookTreeNode;
         this.usersTreeNode = usersTreeNode;
         this.addUserTreeNode = addUserTreeNode;
         this.settingsTreeNode = settingsTreeNode;
+        this.shelvesTreeNode = shelvesTreeNode;
+        this.addShelfTreeNode = addShelfTreeNode;
 
         setForeground(MENU_COLOR);
         setBackground(MENU_COLOR);
@@ -75,6 +83,7 @@ public class MenuTree extends JTree {
         List<DefaultMutableTreeNode> children = List.of(
                 getAccessRestrictedRootMenuByChildrenList(bookManagementTreeNode, List.of(booksTreeNode, addBookTreeNode)),
                 getAccessRestrictedRootMenuByChildrenList(userManagementTreeNode, List.of(usersTreeNode, addUserTreeNode)),
+                getAccessRestrictedRootMenuByChildrenList(shelfManagementTreeNode, List.of(shelvesTreeNode, addShelfTreeNode)),
                 settingsTreeNode
         );
 

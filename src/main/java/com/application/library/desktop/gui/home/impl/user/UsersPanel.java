@@ -95,7 +95,7 @@ public class UsersPanel extends JPanel implements IMainPanel {
                     int row = userDataTable.rowAtPoint(e.getPoint());
                     userDataTable.setRowSelectionInterval(row, row);
 
-                    userPopupMenu.setSelectedUserId(Long.parseLong(userDataTable.getSelectedRowId(row)));
+                    userPopupMenu.setSelectedUserId(Long.parseLong(userDataTable.getSelectedRowId()));
                     userPopupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class SystemVariables {
     public static final Color SYSTEM_DEFAULT_COLOR = new Color(165, 152, 133);
-    public static boolean isDeveloperMode = false;
+    public static boolean isDeveloperMode = true;
     public static String AUTHORIZATION_TOKEN;
     public static UserInformation USER_INFORMATION;
     public static Set<UserRole> USER_ROLES;

@@ -16,6 +16,7 @@ public class BookDTO extends IntegerEntityDTO {
     private String imageUrl;
     private Integer totalCount;
     private Integer availableCount;
+    private Boolean isAvailable;
     private ShelfDTO shelf;
 
     public BookDTO() {
@@ -107,6 +108,14 @@ public class BookDTO extends IntegerEntityDTO {
 
     public void setAvailableCount(Integer availableCount) {
         this.availableCount = availableCount;
+    }
+
+    public Boolean getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(Boolean available) {
+        isAvailable = available;
     }
 
     public ShelfDTO getShelf() {

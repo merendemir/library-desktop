@@ -16,7 +16,13 @@ public class RequestPathConstants {
     public static final String UPDATE_ACTIVE_USER_INFO_PATH = "/api/users/active";
     public static final String GET_USER_BY_ID = "/api/users/{0}";
     public static final String DELETE_USER_BY_ID = "/api/users/{0}";
-
     public static final String LEND_DAY_SETTINGS = "/api/settings/lend/day";
     public static final String LATE_FEE_SETTINGS = "/api/settings/late/fee";
+    public static final String GET_ALL_SHELVES = "/api/shelves";
+    public static final String SAVE_SHELVES = "/api/shelves";
+    public static final String UPDATE_SHELF_BY_ID = "/api/shelves/{0}";
+    public static final String DELETE_SHELF_BY_ID = "/api/shelves/{0}";
+    public static final String GET_ALL_BOOKS_BY_SHELF_ID = "/api/books/shelf/{0}";
+    public static final String GET_ALL_BOOKS = "/api/books";
+    public static final String SAVE_BOOKS = "/api/books";
 }

@@ -30,6 +30,10 @@ public class IconConstants {
     public static final ImageIcon MENU_USER_MANAGEMENT_ICON = ICON_OF("menu-user-management.png");
     public static final ImageIcon MENU_USERS_ICON = ICON_OF("menu-users.png");
     public static final ImageIcon MENU_ADD_USER_ICON = ICON_OF("menu-add-user.png");
+    public static final ImageIcon MENU_ADD_SHELF_ICON = ICON_OF("add-shelf.png");
+    public static final ImageIcon MENU_SHELF_MANAGEMENT_ICON = ICON_OF("shelf-management.png");
+    public static final ImageIcon MENU_SHELVES_ICON = ICON_OF("shelves.png");
+    public static final ImageIcon MENU_DELETE_ICON = ICON_OF("delete.png");
 
     //STREAM ICONS
     public static final ImageIcon NEXT_ICON = ICON_OF("next.png");

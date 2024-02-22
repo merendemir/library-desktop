@@ -37,8 +37,6 @@ public class MainFrame extends BaseFrame implements ShowNotificationFrame, IBase
         setTitle(TitleConstants.MAIN_FRAME);
         setContentPane(contentPane);
 
-        updateCardLayout(MenuOptions.HOME);
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -59,6 +57,7 @@ public class MainFrame extends BaseFrame implements ShowNotificationFrame, IBase
         setMinimumSize(getSize());
         setLocationRelativeTo(null);
         setVisible(true);
+        operationsPanel.updateCardLayout(MenuOptions.HOME);
     }
 
     private JPanel contentPane;

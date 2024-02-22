@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.application.library</groupId>
-	<artifactId>desktop</artifactId>
+	<artifactId>library-desktop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>desktop</name>
+	<name>library-desktop</name>
 	<description>Library Desktop Application</description>
 	<properties>
 		<java.version>17</java.version>
@@ -22,11 +22,6 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>com.intellij</groupId>

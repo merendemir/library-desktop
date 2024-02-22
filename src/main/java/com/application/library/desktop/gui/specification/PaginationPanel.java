@@ -82,6 +82,7 @@ public class PaginationPanel extends JPanel {
         this.currentPage = responseDto.getPageable().getPageNumber();
         this.totalPages = responseDto.getTotalPages();
         int pageNumber = currentPage + 1;
+        if (pageNumber > responseDto.getTotalPages()) pageNumber = responseDto.getTotalPages();
         pageDetailsLabel.setText("Page " + pageNumber + " of " + responseDto.getTotalPages() + " (" + responseDto.getTotalElements() + " elements)");
 
 

@@ -8,7 +8,10 @@ public enum MenuOptions {
     ADD_BOOK("Add Book", "addBookCard"),
     USERS("Users", "usersCard"),
     ADD_USER("Add User", "addUserCard"),
-    SETTINGS("Settings", "settingsCard");
+    SETTINGS("Settings", "settingsCard"),
+    SHELF_MANAGEMENT("Shelf Management", "homeCard"),
+    SHELVES("Shelves", "shelvesCard"),
+    ADD_SHELF("Add Shelf", "addShelfCard");
 
 
     private final String title;
