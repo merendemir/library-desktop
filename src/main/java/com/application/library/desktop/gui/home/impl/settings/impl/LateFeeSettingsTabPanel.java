@@ -31,28 +31,33 @@ public class LateFeeSettingsTabPanel extends JPanel implements ITabbedPane {
     }
 
     private void setComponentsActions() {
-        LateFeeSpinner.addChangeListener(e -> setSpinnerLabelText());
+        LateFeeSpinner.addChangeListener(e -> setSpinnerLabelText(getSpinnerValueAsString()));
         LateFeeSpinner.setModel(new SpinnerNumberModel(0, 0, 9999.99, 0.05));
     }
 
-    private void setSpinnerLabelText() {
-        lateFeeSpinnerLabel.setText(getSpinnerValue());
+    private void setSpinnerLabelText(String value) {
+        lateFeeSpinnerLabel.setText(value);
     }
 
-    private String getSpinnerValue() {
+    private String getSpinnerValueAsString() {
         Double value = (Double) LateFeeSpinner.getValue();
+        return formattingSpinnerValue(value);
+    }
+
+    private String formattingSpinnerValue(Double value) {
         return String.format("%.2f", value).replace(",", ".");
     }
 
     @Override
     public void selected() {
         Double lateFeeSettings = httpRequestService.getLateFeeSettings();
+        setSpinnerLabelText(formattingSpinnerValue(lateFeeSettings));
         LateFeeSpinner.setValue(lateFeeSettings);
     }
 
     @Override
     public void onOK() {
-        String response = httpRequestService.setLateFeeSettings(Double.parseDouble(getSpinnerValue()));
+        String response = httpRequestService.setLateFeeSettings(Double.parseDouble(getSpinnerValueAsString()));
         if (response != null) {
             applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.LATE_FEE_SETTINGS_UPDATE_SUCCESS, NotificationType.SUCCESS));
         }
