@@ -1,8 +1,7 @@
 package com.application.library.desktop.gui.home.impl.shelf;
 
 import com.application.library.desktop.gui.home.impl.panel.main.IMainPanel;
-import com.application.library.desktop.gui.home.impl.shelf.ShowShelvesPanel;
-import com.application.library.desktop.gui.home.impl.shelf.ShelvesPanelCreateService;
+import com.application.library.desktop.gui.home.impl.panel.main.IRefreshablePanel;
 import com.application.library.desktop.gui.home.impl.shelf.menu.ShelvesPopupMenu;
 import com.application.library.desktop.gui.table.CustomDataTable;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Service
-public class ShelvesOperationPanel extends JPanel implements IMainPanel {
+public class ShelvesOperationPanel extends JPanel implements IMainPanel, IRefreshablePanel {
     private final ShowShelvesPanel showShelvesPanel;
     private final ShelvesPopupMenu shelvesPopupMenu;
 
@@ -72,6 +71,11 @@ public class ShelvesOperationPanel extends JPanel implements IMainPanel {
 
     @Override
     public void selected() {
+        showShelvesPanel.selected();
+    }
+
+    @Override
+    public void refreshData() {
         showShelvesPanel.selected();
     }
 }

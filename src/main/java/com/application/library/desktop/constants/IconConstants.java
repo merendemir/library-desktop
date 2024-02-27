@@ -34,6 +34,8 @@ public class IconConstants {
     public static final ImageIcon MENU_SHELF_MANAGEMENT_ICON = ICON_OF("shelf-management.png");
     public static final ImageIcon MENU_SHELVES_ICON = ICON_OF("shelves.png");
     public static final ImageIcon MENU_DELETE_ICON = ICON_OF("delete.png");
+    public static final ImageIcon MENU_UPDATE_ICON = ICON_OF("update.png");
+    public static final ImageIcon MENU_MOVE_ICON = ICON_OF("move.png");
 
     //STREAM ICONS
     public static final ImageIcon NEXT_ICON = ICON_OF("next.png");

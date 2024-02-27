@@ -25,4 +25,8 @@ public class RequestPathConstants {
     public static final String GET_ALL_BOOKS_BY_SHELF_ID = "/api/books/shelf/{0}";
     public static final String GET_ALL_BOOKS = "/api/books";
     public static final String SAVE_BOOKS = "/api/books";
+    public static final String GET_BOOK_BY_ID = "/api/books/{0}";
+    public static final String DELETE_BOOK_BY_ID = "/api/books/{0}";
+    public static final String UPDATE_BOOK_BY_ID = "/api/books/{0}";
+    public static final String MOVE_BOOK = "/api/books/move/{0}";
 }

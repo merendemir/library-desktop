@@ -5,7 +5,7 @@ import com.application.library.desktop.enumerations.NotificationType;
 import com.application.library.desktop.gui.specification.PaginationPanel;
 import com.application.library.desktop.listener.event.NotificationEvent;
 import com.application.library.desktop.request.dto.SaveShelfRequestDto;
-import com.application.library.desktop.request.view.shelf.ShelfBaseDTO;
+import com.application.library.desktop.request.view.shelf.ShelfDTO;
 import com.application.library.desktop.service.HttpRequestService;
 import com.application.library.desktop.supplier.TaskSupplier;
 import com.application.library.desktop.utils.pagination.PaginationResponseDto;
@@ -31,6 +31,12 @@ public class ShelvesPanelCreateService {
         return showShelvesPanel;
     }
 
+    public ShowShelvesPanel createNewShelvesPanel(TaskSupplier taskSupplier) {
+        ShowShelvesPanel showShelvesPanel = new ShowShelvesPanel();
+        showShelvesPanel.setUpdateShelvesDataTableTaskSupplier(taskSupplier);
+        return showShelvesPanel;
+    }
+
     public SaveShelfPanel createNewSaveShelfPanel(TaskSupplier taskSupplier) {
         SaveShelfPanel saveShelfPanel = new SaveShelfPanel();
         saveShelfPanel.setSaveShelfTaskSupplier(taskSupplier);
@@ -45,7 +51,7 @@ public class ShelvesPanelCreateService {
 
     private void updateShelvesDataTable(ShowShelvesPanel showShelvesPanel) {
         PaginationPanel paginationPanel = showShelvesPanel.getPaginationPanel();
-        PaginationResponseDto<List<ShelfBaseDTO>> allShelf = httpRequestService.getAllShelf(paginationPanel.getPaginationData());
+        PaginationResponseDto<List<ShelfDTO>> allShelf = httpRequestService.getAllShelf(paginationPanel.getPaginationData());
         showShelvesPanel.removeAllRows();
         allShelf.getContent().forEach(showShelvesPanel::addRow);
         paginationPanel.fillPageDetails(allShelf);

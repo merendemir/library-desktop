@@ -4,6 +4,7 @@ import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.enumerations.SortDirection;
 import com.application.library.desktop.enumerations.UserRole;
 import com.application.library.desktop.gui.home.impl.panel.main.IMainPanel;
+import com.application.library.desktop.gui.home.impl.panel.main.IRefreshablePanel;
 import com.application.library.desktop.gui.home.impl.user.menu.UserPopupMenu;
 import com.application.library.desktop.gui.specification.PaginationPanel;
 import com.application.library.desktop.gui.specification.SortPanel;
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class UsersPanel extends JPanel implements IMainPanel {
+public class UsersPanel extends JPanel implements IMainPanel, IRefreshablePanel {
     String[] columnNames = {"id", "X", "First Name", "Last Name", "Email", "Creation Date", "Updated Date"};
     private final Map<String, String> sortMap = new HashMap<>(Map.of(
             "Fist Name", "firstName",
@@ -154,6 +155,11 @@ public class UsersPanel extends JPanel implements IMainPanel {
         paginationPanel.clearPanel();
         filterByRolePanel.setVisible(AccessControlUtils.hasAdminAuthority());
         sendRequestAndUpdateUsersTable();
+    }
+
+    @Override
+    public void refreshData() {
+        this.sendRequestAndUpdateUsersTable();
     }
 
     private void createUIComponents() {

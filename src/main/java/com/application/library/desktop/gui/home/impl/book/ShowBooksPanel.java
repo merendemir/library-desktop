@@ -27,11 +27,7 @@ public class ShowBooksPanel extends JPanel implements IMainPanel {
         $$$setupUI$$$();
         setLayout(new BorderLayout());
         add(contentPane, BorderLayout.CENTER);
-
-//        setComponentActions();
     }
-
-
 
     public PaginationPanel getPaginationPanel() {
         return paginationPanel;

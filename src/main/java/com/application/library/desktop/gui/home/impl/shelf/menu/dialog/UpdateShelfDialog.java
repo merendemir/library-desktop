@@ -5,9 +5,10 @@ import com.application.library.desktop.constants.TitleConstants;
 import com.application.library.desktop.core.BaseDialog;
 import com.application.library.desktop.enumerations.NotificationType;
 import com.application.library.desktop.gui.home.impl.shelf.SaveShelfPanel;
+import com.application.library.desktop.gui.home.impl.shelf.ShelvesOperationPanel;
 import com.application.library.desktop.gui.home.impl.shelf.ShelvesPanelCreateService;
 import com.application.library.desktop.listener.event.NotificationEvent;
-import com.application.library.desktop.listener.event.UpdateShelvesListEvent;
+import com.application.library.desktop.listener.event.UpdatePanelDataEvent;
 import com.application.library.desktop.request.dto.SaveShelfRequestDto;
 import com.application.library.desktop.service.HttpRequestService;
 import com.application.library.desktop.utils.ApplicationContextHelper;
@@ -67,8 +68,7 @@ public class UpdateShelfDialog extends BaseDialog {
         Long id = httpRequestService.updateShelf(shelfId, saveShelfRequestDto);
 
         if (id != null) {
-            applicationEventPublisher.publishEvent(new UpdateShelvesListEvent(this));
-            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.SHELF_UPDATE_SUCCESS, NotificationType.SUCCESS));
+            applicationEventPublisher.publishEvent(new UpdatePanelDataEvent(this, ShelvesOperationPanel.class));            applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.SHELF_UPDATE_SUCCESS, NotificationType.SUCCESS));
             dispose();
         }
     }

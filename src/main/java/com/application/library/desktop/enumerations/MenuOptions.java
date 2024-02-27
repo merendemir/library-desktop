@@ -4,7 +4,7 @@ public enum MenuOptions {
     HOME("Menu", "homeCard"),
     BOOK_MANAGEMENT("Book Management", "homeCard"),
     USER_MANAGEMENT("User Management", "homeCard"),
-    BOOKS("Book", "bookCard"),
+    BOOKS("Books", "bookCard"),
     ADD_BOOK("Add Book", "addBookCard"),
     USERS("Users", "usersCard"),
     ADD_USER("Add User", "addUserCard"),

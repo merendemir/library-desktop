@@ -24,8 +24,8 @@ public class AddBookPanel extends JPanel implements IMainPanel {
     private final ApplicationEventPublisher applicationEventPublisher;
 
 
-    public AddBookPanel(ShelvesPanelCreateService shelvesPanelCreateService, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
-        saveBookPanel = new SaveBookPanel(shelvesPanelCreateService.createNewShelvesPanel());
+    public AddBookPanel(BooksPanelCreateService booksPanelCreateService, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
+        saveBookPanel = booksPanelCreateService.createNewSaveBooksPanel();
         this.httpRequestService = httpRequestService;
         this.applicationEventPublisher = applicationEventPublisher;
         $$$setupUI$$$();

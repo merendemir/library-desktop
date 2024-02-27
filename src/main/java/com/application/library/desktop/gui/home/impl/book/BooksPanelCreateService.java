@@ -1,5 +1,6 @@
 package com.application.library.desktop.gui.home.impl.book;
 
+import com.application.library.desktop.gui.home.impl.shelf.ShelvesPanelCreateService;
 import com.application.library.desktop.gui.specification.PaginationPanel;
 import com.application.library.desktop.request.view.book.BookDTO;
 import com.application.library.desktop.service.HttpRequestService;
@@ -13,11 +14,11 @@ import java.util.List;
 public class BooksPanelCreateService {
 
     private final HttpRequestService httpRequestService;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final ShelvesPanelCreateService shelvesPanelCreateService;
 
-    BooksPanelCreateService(HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher) {
+    BooksPanelCreateService(HttpRequestService httpRequestService, ShelvesPanelCreateService shelvesPanelCreateService) {
         this.httpRequestService = httpRequestService;
-        this.applicationEventPublisher = applicationEventPublisher;
+        this.shelvesPanelCreateService = shelvesPanelCreateService;
     }
 
     public ShowBooksPanel createNewBooksPanel() {
@@ -26,24 +27,15 @@ public class BooksPanelCreateService {
         return showBooksPanel;
     }
 
-//    public SaveShelfPanel createNewSaveShelfPanel(TaskSupplier taskSupplier) {
-//        SaveShelfPanel saveShelfPanel = new SaveShelfPanel();
-//        saveShelfPanel.setSaveShelfTaskSupplier(taskSupplier);
-//        return saveShelfPanel;
-//    }
-
-//    public SaveShelfPanel createNewSaveShelfPanel() {
-//        SaveShelfPanel saveShelfPanel = new SaveShelfPanel();
-//        saveShelfPanel.setSaveShelfTaskSupplier(() -> saveShelfByPanel(saveShelfPanel));
-//        return saveShelfPanel;
-//    }
+    public SaveBookPanel createNewSaveBooksPanel() {
+        return new SaveBookPanel(shelvesPanelCreateService.createNewShelvesPanel());
+    }
 
     private void updateBooksDataTable(ShowBooksPanel showBooksPanel) {
         PaginationPanel paginationPanel = showBooksPanel.getPaginationPanel();
         PaginationResponseDto<List<BookDTO>> allBooks;
 
         if (showBooksPanel.getShelfId() == null) {
-            System.out.println(showBooksPanel.getShelfId());
             allBooks = httpRequestService.getAllBooks(paginationPanel.getPaginationData());
         } else {
             allBooks = httpRequestService.getAllBooksByShelfId(showBooksPanel.getShelfId(), paginationPanel.getPaginationData());

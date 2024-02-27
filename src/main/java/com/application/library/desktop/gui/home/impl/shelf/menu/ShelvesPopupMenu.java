@@ -4,12 +4,13 @@ import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.constants.MessageConstants;
 import com.application.library.desktop.constants.TitleConstants;
 import com.application.library.desktop.enumerations.NotificationType;
+import com.application.library.desktop.gui.home.impl.shelf.ShelvesOperationPanel;
 import com.application.library.desktop.gui.home.impl.shelf.menu.dialog.ShowBooksOnShelfDialog;
 import com.application.library.desktop.gui.home.impl.shelf.menu.dialog.UpdateShelfDialog;
 import com.application.library.desktop.gui.home.impl.shelf.menu.item.UpdateShelfMenuItem;
-import com.application.library.desktop.gui.home.impl.user.menu.DeleteShelfMenuItem;
+import com.application.library.desktop.gui.home.impl.shelf.menu.item.DeleteShelfMenuItem;
 import com.application.library.desktop.listener.event.NotificationEvent;
-import com.application.library.desktop.listener.event.UpdateShelvesListEvent;
+import com.application.library.desktop.listener.event.UpdatePanelDataEvent;
 import com.application.library.desktop.request.view.shelf.ShelfDTO;
 import com.application.library.desktop.service.HttpRequestService;
 import com.application.library.desktop.utils.ApplicationContextHelper;
@@ -79,8 +80,7 @@ public class ShelvesPopupMenu extends JPopupMenu {
             if (choice == JOptionPane.YES_OPTION) {
                 Long id = httpRequestService.deleteShelfById(selectedShelf.getId());
                 if (id != null) {
-                    applicationEventPublisher.publishEvent(new UpdateShelvesListEvent(this));
-                    applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.SHELF_DELETE_SUCCESS, NotificationType.SUCCESS));
+                    applicationEventPublisher.publishEvent(new UpdatePanelDataEvent(this, ShelvesOperationPanel.class));                    applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.SHELF_DELETE_SUCCESS, NotificationType.SUCCESS));
                 }
             }
         });

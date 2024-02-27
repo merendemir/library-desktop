@@ -20,6 +20,10 @@ public class TitleConstants {
     public static final String UPDATE_SHELF = "Update Shelf";
     public static final String DELETE_SHELF = "Delete Shelf";
     public static final String SHOW_BOOKS_ON_SHELF = "Show Books";
+    public static final String UPDATE_BOOK = "Update Book";
+    public static final String DELETE_BOOK = "Delete Book";
+    public static final String SHOW_SHELF = "Show Shelf";
+    public static final String MOVE_BOOK = "Move Book";
 
     //TABBED PANE
     public static final String LEND_DAY_SETTINGS_TAB = "Lend Day Settings";

@@ -31,7 +31,6 @@ public class SettingsPanel extends JPanel implements IMainPanel {
         tabbedPane.addChangeListener(e -> {
             if (tabbedPane.getSelectedComponent() == null) return;
 
-            System.out.println("Selected tab: " + tabbedPane.getSelectedIndex());
             ITabbedPane selectedTabbedPane = (ITabbedPane) tabbedPane.getSelectedComponent();
             selectedTabbedPane.selected();
         });

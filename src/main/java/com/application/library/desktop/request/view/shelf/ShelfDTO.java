@@ -1,9 +1,6 @@
 package com.application.library.desktop.request.view.shelf;
 
 
-import com.application.library.desktop.request.view.book.BookDTO;
-import java.util.Set;
-
 public class ShelfDTO {
     private Long id;
     private String name;

@@ -44,12 +44,10 @@ public class HttpClientService {
                     .POST(HttpRequest.BodyPublishers.ofString(asJsonString(body)));
 
             if (!RequestPathConstants.PUBLIC_PATHS.contains(path)) {
-                builder.header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN);
+                builder.header("Authorization", getToken());
             }
 
-            HttpRequest build = builder.build();
-            System.out.println("POST  " + build.uri());
-            HttpResponse<String> response = executeRequest(client.send(build, HttpResponse.BodyHandlers.ofString()));
+            HttpResponse<String> response = executeRequest(client.send(builder.build(), HttpResponse.BodyHandlers.ofString()));
             return objectMapper.readValue(response.body(), responseClass);
         });
     }
@@ -59,17 +57,12 @@ public class HttpClientService {
             HttpRequest.Builder builder = HttpRequest.newBuilder()
                     .uri(URI.create(getFullPathByParams(path, params)))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN)
+                    .header("Authorization", getToken())
                     .POST(HttpRequest.BodyPublishers.noBody());
 
             HttpResponse.BodyHandler<String> responseBodyHandler = HttpResponse.BodyHandlers.ofString();
 
-            System.out.println("asd::: " + responseBodyHandler);
-
-
-            HttpRequest build = builder.build();
-            System.out.println("POST  " + build.uri());
-            HttpResponse<String> response = executeRequest(client.send(build, responseBodyHandler));
+            HttpResponse<String> response = executeRequest(client.send(builder.build(), responseBodyHandler));
             return objectMapper.readValue(response.body(), responseClass);
         });
     }
@@ -80,12 +73,11 @@ public class HttpClientService {
             HttpRequest build = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + path))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN)
+                    .header("Authorization", getToken())
                     .GET()
                     .build();
 
             HttpResponse<String> response = executeRequest(client.send(build, HttpResponse.BodyHandlers.ofString()));
-            System.out.println("GET   " + build.uri());
             return objectMapper.readValue(response.body(), responseClass);
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,12 +90,11 @@ public class HttpClientService {
             HttpRequest build = HttpRequest.newBuilder()
                     .uri(URI.create(getFullPathByParams(path, params)))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN)
+                    .header("Authorization", getToken())
                     .GET()
                     .build();
 
             HttpResponse<String> response = executeRequest(client.send(build, HttpResponse.BodyHandlers.ofString()));
-            System.out.println("GET   " + build.uri());
             return objectMapper.readValue(response.body(), responseClass);
         });
     }
@@ -113,11 +104,23 @@ public class HttpClientService {
             HttpRequest.Builder builder = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + path))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN)
+                    .header("Authorization", getToken())
                     .PUT(HttpRequest.BodyPublishers.ofString(asJsonString(body)));
 
-            HttpRequest build = builder.build();
-            System.out.println("PUT  " + build.uri());
+            HttpResponse<String> response = executeRequest(client.send(builder.build(), HttpResponse.BodyHandlers.ofString()));
+            return objectMapper.readValue(response.body(), responseClass);
+        });
+    }
+
+    public <T> T doPut(String path, Class<T> responseClass, Map<String, String> params) {
+        return clientSupplier.executeClientSend(() -> {
+            HttpRequest build = HttpRequest.newBuilder()
+                    .uri(URI.create(getFullPathByParams(path, params)))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", getToken())
+                    .PUT(HttpRequest.BodyPublishers.noBody())
+                    .build();
+
             HttpResponse<String> response = executeRequest(client.send(build, HttpResponse.BodyHandlers.ofString()));
             return objectMapper.readValue(response.body(), responseClass);
         });
@@ -128,12 +131,11 @@ public class HttpClientService {
             HttpRequest build = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + path))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + SystemVariables.AUTHORIZATION_TOKEN)
+                    .header("Authorization", getToken())
                     .DELETE()
                     .build();
 
             HttpResponse<String> response = client.send(build, HttpResponse.BodyHandlers.ofString());
-            System.out.println("DELETE   " + build.uri());
             return objectMapper.readValue(response.body(), responseClass);
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,5 +158,9 @@ public class HttpClientService {
         if (obj == null) return null;
 
         return objectMapper.writeValueAsString(obj);
+    }
+    
+    private String getToken() {
+        return "Bearer " + SystemVariables.AUTHORIZATION_TOKEN;
     }
 }

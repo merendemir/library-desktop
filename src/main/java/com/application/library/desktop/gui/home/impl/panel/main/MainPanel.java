@@ -4,6 +4,7 @@ import com.application.library.desktop.constants.MessageConstants;
 import com.application.library.desktop.enumerations.MenuOptions;
 import com.application.library.desktop.enumerations.NotificationType;
 import com.application.library.desktop.gui.home.impl.book.AddBookPanel;
+import com.application.library.desktop.gui.home.impl.book.BookOperationsPanel;
 import com.application.library.desktop.gui.home.impl.book.ShowBooksPanel;
 import com.application.library.desktop.gui.home.impl.book.BooksPanelCreateService;
 import com.application.library.desktop.gui.home.impl.settings.SettingsPanel;
@@ -28,7 +29,7 @@ public class MainPanel extends JPanel {
 
     private final Map<MenuOptions, IMainPanel> cardMap = new HashMap<>();
     private final ShowBooksPanel homePanel;
-    private final ShowBooksPanel showBooksPanel;
+    private final BookOperationsPanel bookOperationsPanel;
     private final UserPanel addUserPanel = new UserPanel(this::saveUser);
     private final UsersPanel usersPanel;
     private final SettingsPanel settingsPanel;
@@ -36,19 +37,19 @@ public class MainPanel extends JPanel {
     private final HttpRequestService httpRequestService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final ShelvesOperationPanel shelvesOperationPanel;
-    private final SaveShelfPanel newSaveShelfPanel;
+    private final SaveShelfPanel saveShelfPanel;
 
 
-    public MainPanel(ShelvesPanelCreateService shelvesPanelCreateService, BooksPanelCreateService booksPanelCreateService, UsersPanel usersPanel, SettingsPanel settingsPanel, AddBookPanel addBookPanel, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher, ShelvesOperationPanel shelvesOperationPanel) {
+    public MainPanel(ShelvesPanelCreateService shelvesPanelCreateService, BooksPanelCreateService booksPanelCreateService, BookOperationsPanel bookOperationsPanel, UsersPanel usersPanel, SettingsPanel settingsPanel, AddBookPanel addBookPanel, HttpRequestService httpRequestService, ApplicationEventPublisher applicationEventPublisher, ShelvesOperationPanel shelvesOperationPanel) {
+        this.bookOperationsPanel = bookOperationsPanel;
         this.usersPanel = usersPanel;
         this.settingsPanel = settingsPanel;
         this.addBookPanel = addBookPanel;
         this.httpRequestService = httpRequestService;
         this.applicationEventPublisher = applicationEventPublisher;
 
-        this.newSaveShelfPanel = shelvesPanelCreateService.createNewSaveShelfPanel();
+        this.saveShelfPanel = shelvesPanelCreateService.createNewSaveShelfPanel();
         this.shelvesOperationPanel = shelvesOperationPanel;
-        this.showBooksPanel = booksPanelCreateService.createNewBooksPanel();
         this.homePanel = booksPanelCreateService.createNewBooksPanel();
 
         setLayout(new CardLayout(0, 0));
@@ -66,20 +67,16 @@ public class MainPanel extends JPanel {
         cardLayout.show(this, menuOption.getCardName());
     }
 
-    public void updateShelvesList() {
-        shelvesOperationPanel.selected();
-    }
-
     private void fillCardMap() {
         cardMap.put(MenuOptions.HOME, homePanel);
-        cardMap.put(MenuOptions.BOOKS, showBooksPanel);
+        cardMap.put(MenuOptions.BOOKS, bookOperationsPanel);
         cardMap.put(MenuOptions.ADD_BOOK, addBookPanel);
         cardMap.put(MenuOptions.USERS, usersPanel);
         cardMap.put(MenuOptions.ADD_USER, addUserPanel);
         cardMap.put(MenuOptions.SETTINGS, settingsPanel);
         cardMap.put(MenuOptions.SHELF_MANAGEMENT, homePanel);
         cardMap.put(MenuOptions.SHELVES, shelvesOperationPanel);
-        cardMap.put(MenuOptions.ADD_SHELF, newSaveShelfPanel);
+        cardMap.put(MenuOptions.ADD_SHELF, saveShelfPanel);
     }
 
     private void saveUser() {

@@ -2,6 +2,7 @@ package com.application.library.desktop.gui.home.impl.book;
 
 import com.application.library.desktop.gui.home.impl.shelf.ShowShelvesPanel;
 import com.application.library.desktop.request.dto.CreateBookRequestDto;
+import com.application.library.desktop.request.view.book.BookDTO;
 import com.application.library.desktop.request.view.shelf.ShelfDTO;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -61,6 +62,26 @@ public class SaveBookPanel extends JPanel {
         createBookRequestDto.setTotalCount((int) totalCountSpinner.getValue());
         createBookRequestDto.setShelfId(selectedShelfId);
         return createBookRequestDto;
+    }
+
+    public void fillFields(BookDTO selectedBook) {
+        if (selectedBook == null) {
+            clearFields();
+            return;
+        }
+
+        nameField.setText(selectedBook.getName());
+        isbnField.setText(selectedBook.getIsbn());
+        authorField.setText(selectedBook.getAuthor());
+        pageCountSpinner.setValue(selectedBook.getPageCount());
+        publisherField.setText(selectedBook.getPublisher());
+        publishedDateField.setText(selectedBook.getPublishedAt());
+        languageField.setText(selectedBook.getLanguage());
+        descriptionField.setText(selectedBook.getDescription());
+        imageUrlField.setText(selectedBook.getImageUrl());
+        totalCountSpinner.setValue(selectedBook.getTotalCount());
+        selectedShelfLabel.setText(selectedBook.getShelf().getName());
+        selectedShelfId = selectedBook.getShelf().getId();
     }
 
     public void clearFields() {

@@ -2,7 +2,6 @@ package com.application.library.desktop.gui.home.impl.shelf;
 
 import com.application.library.desktop.gui.specification.PaginationPanel;
 import com.application.library.desktop.gui.table.CustomDataTable;
-import com.application.library.desktop.request.view.shelf.ShelfBaseDTO;
 import com.application.library.desktop.request.view.shelf.ShelfDTO;
 import com.application.library.desktop.supplier.TaskSupplier;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -31,25 +30,26 @@ public class ShowShelvesPanel extends JPanel {
         return paginationPanel;
     }
 
-    public void addRow(ShelfBaseDTO shelfBaseDTO) {
-        shelvesDataTable.addRow(convertBaseShelfDto(shelfBaseDTO));
+    public void addRow(ShelfDTO shelfDTO) {
+        shelvesDataTable.addRow(convertBaseShelfDto(shelfDTO));
     }
 
     public void removeAllRows() {
         shelvesDataTable.removeAllData();
     }
 
-    private String[] convertBaseShelfDto(ShelfBaseDTO shelfBaseDTO) {
+    private String[] convertBaseShelfDto(ShelfDTO shelfDTO) {
         return new String[]{
-                String.valueOf(shelfBaseDTO.getId()),
+                String.valueOf(shelfDTO.getId()),
                 String.valueOf(shelvesDataTable.getRowCount() + 1),
-                shelfBaseDTO.getName(),
-                String.valueOf(shelfBaseDTO.getCapacity()),
-                String.valueOf(shelfBaseDTO.getAvailableCapacity()),
+                shelfDTO.getName(),
+                String.valueOf(shelfDTO.getCapacity()),
+                String.valueOf(shelfDTO.getAvailableCapacity()),
         };
     }
 
     public void selected() {
+        if (updateShelvesDataTableTaskSupplier == null) return;
         updateShelvesDataTableTaskSupplier.run();
     }
 
@@ -68,6 +68,10 @@ public class ShowShelvesPanel extends JPanel {
         shelfDTO.setCapacity(Integer.parseInt(shelvesDataTable.getValueAt(shelvesDataTable.getSelectedRow(), 3).toString()));
 
         return shelfDTO;
+    }
+
+    public void showPaginationPanel(boolean show) {
+        paginationPanelGUI.setVisible(show);
     }
 
     private void getUpdateShelvesDataTableTaskSupplier() {

@@ -13,7 +13,9 @@ public class Supplier {
 
     public static HttpResponse<String> executeRequest(HttpResponse<String> response) {
         int statusCode = response.statusCode();
-        System.out.println("Status code: " + statusCode);
+
+        System.out.println(response.request().method() + " Status Code:::" + statusCode + " URL:::"+ response.uri());
+
         if (is2xxSuccessful(statusCode)) return response;
 
         if (statusCode == 401) throw new AuthorizationException();

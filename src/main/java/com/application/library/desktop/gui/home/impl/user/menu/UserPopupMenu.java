@@ -4,8 +4,9 @@ import com.application.library.desktop.constants.IconConstants;
 import com.application.library.desktop.constants.MessageConstants;
 import com.application.library.desktop.constants.TitleConstants;
 import com.application.library.desktop.enumerations.NotificationType;
+import com.application.library.desktop.gui.home.impl.user.UsersPanel;
 import com.application.library.desktop.listener.event.NotificationEvent;
-import com.application.library.desktop.listener.event.UpdateUserListEvent;
+import com.application.library.desktop.listener.event.UpdatePanelDataEvent;
 import com.application.library.desktop.request.view.UserDTO;
 import com.application.library.desktop.service.HttpRequestService;
 import com.application.library.desktop.utils.ApplicationContextHelper;
@@ -54,7 +55,7 @@ public class UserPopupMenu extends JPopupMenu {
             Long userId = httpRequestService.deleteUserById(selectedUserId);
 
             if (userId != null) {
-                applicationEventPublisher.publishEvent(new UpdateUserListEvent(this));
+                applicationEventPublisher.publishEvent(new UpdatePanelDataEvent(this, UsersPanel.class));
                 applicationEventPublisher.publishEvent(new NotificationEvent(this, MessageConstants.USER_DELETE_SUCCESS, NotificationType.SUCCESS));
             }
         });
